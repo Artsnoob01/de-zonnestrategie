@@ -84,6 +84,27 @@
             </div>
           </div>
 
+          <!-- Dagdeel-verdeling overschot -->
+          <div class="daypart-breakdown" style="margin-top: 20px;">
+            <div class="daypart-breakdown-header">Jouw overschot per dagdeel × spotprijs</div>
+            <div class="result-row daypart-row">
+              <span>☀️ Ochtend (06–12) — <span id="res-surplus-morning-kwh">819</span> kWh × €<span id="res-spot-morning">0,12</span></span>
+              <span id="res-surplus-morning-val">€ 98</span>
+            </div>
+            <div class="result-row daypart-row">
+              <span>🔆 Middag (12–17) — <span id="res-surplus-afternoon-kwh">1.502</span> kWh × €<span id="res-spot-afternoon">0,05</span></span>
+              <span id="res-surplus-afternoon-val">€ 75</span>
+            </div>
+            <div class="result-row daypart-row">
+              <span>🌇 Avond (17–22) — <span id="res-surplus-evening-kwh">410</span> kWh × €<span id="res-spot-evening">0,14</span></span>
+              <span id="res-surplus-evening-val">€ 57</span>
+            </div>
+            <div class="result-row daypart-row daypart-total">
+              <span>Totaal spotwaarde overschot</span>
+              <span id="res-spot-total">€ 230</span>
+            </div>
+          </div>
+
           <!-- Dagdeel-analyse -->
           <div class="daypart-analysis" style="margin-top: 24px;">
             <div class="daypart-header">Spotmarktprijzen per dagdeel <span style="font-weight: 400; opacity: 0.5;">(EPEX 2025)</span></div>
@@ -418,6 +439,34 @@
   .result-row span:first-child { color: rgba(255,255,255,0.7); }
   .result-row span:last-child { color: white; font-weight: 600; }
 
+  /* Daypart breakdown */
+  .daypart-breakdown {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius-sm);
+    padding: 18px 20px;
+  }
+  .daypart-breakdown-header {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+  }
+  .daypart-row { font-size: 0.88rem; padding: 8px 0; }
+  .daypart-row span:first-child { font-size: 0.85rem; }
+  .daypart-total {
+    border-top: 1px solid rgba(255,255,255,0.12);
+    margin-top: 6px;
+    padding-top: 12px;
+  }
+  .daypart-total span:last-child {
+    color: var(--sun);
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.05rem;
+  }
+
   /* Daypart analysis */
   .daypart-analysis {
     background: rgba(255,255,255,0.06);
@@ -593,8 +642,20 @@
     $('res-selfuse').textContent = fmt(selfUse) + ' kWh';
     $('res-surplus').textContent = fmt(surplus) + ' kWh';
 
-    // Dagdeel-insight updaten met echte spotmarkt-berekening
+    // Dagdeel-breakdown updaten
+    $('res-surplus-morning-kwh').textContent = fmt(Math.round(surplusMorning));
+    $('res-surplus-afternoon-kwh').textContent = fmt(surplusAfternoonRound);
+    $('res-surplus-evening-kwh').textContent = fmt(Math.round(surplusEvening));
+    $('res-spot-morning').textContent = SPOT.morning.toFixed(2).replace('.', ',');
+    $('res-spot-afternoon').textContent = SPOT.afternoon.toFixed(2).replace('.', ',');
+    $('res-spot-evening').textContent = SPOT.evening.toFixed(2).replace('.', ',');
+    $('res-surplus-morning-val').textContent = '€ ' + fmt(Math.round(surplusMorning * SPOT.morning));
+    $('res-surplus-afternoon-val').textContent = '€ ' + fmt(afternoonRevenue);
+    $('res-surplus-evening-val').textContent = '€ ' + fmt(Math.round(surplusEvening * SPOT.evening));
     const spotRevenue = Math.round(feedinSpot);
+    $('res-spot-total').textContent = '€ ' + fmt(spotRevenue);
+
+    // Dagdeel-insight updaten met echte spotmarkt-berekening
     $('daypart-insight').innerHTML =
       `📊 <strong>Spotmarkt-realiteit:</strong> je ${fmt(surplus)} kWh overschot is op de EPEX-markt ` +
       `<strong>€${fmt(spotRevenue)}/jaar</strong> waard — waarvan ${fmt(surplusAfternoonRound)} kWh in de goedkoopste uren (middag, €${SPOT.afternoon.toFixed(2).replace('.',',')}). ` +
