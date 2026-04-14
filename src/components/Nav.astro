@@ -1,0 +1,39 @@
+---
+interface Props {
+  isLanding?: boolean;
+}
+const { isLanding = false } = Astro.props;
+---
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <div class="sun-icon"></div>
+      De Zonnestrategie
+    </a>
+    <div class="nav-links">
+      {isLanding ? (
+        <>
+          <a href="#wat-verandert">Wat verandert er?</a>
+          <a href="#opties">Jouw opties</a>
+          <a href="#ere">ERE-credits</a>
+          <a href="#rekentool">Rekentool</a>
+          <a href="#faq">FAQ</a>
+        </>
+      ) : (
+        <>
+          <a href="/">Home</a>
+          <a href="/#rekentool">Rekentool</a>
+        </>
+      )}
+      <a href="/blog/">Blog</a>
+      <a href={isLanding ? "#rekentool" : "/#rekentool"} class="nav-cta">Bereken je situatie →</a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav')?.classList.toggle('scrolled', window.scrollY > 20);
+  });
+</script>

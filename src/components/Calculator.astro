@@ -1,0 +1,515 @@
+<!-- ═══════════════════════ CALCULATOR ═══════════════════════ -->
+<section class="calc-section" id="rekentool">
+  <div class="container">
+
+    <!-- ── STEP TABS ── -->
+    <div class="calc-steps-nav">
+      <button class="calc-step-tab active" data-step="1">
+        <span class="step-num">1</span>
+        Wat verandert er voor jouw zonnepanelen?
+      </button>
+      <div class="step-connector"></div>
+      <button class="calc-step-tab" data-step="2">
+        <span class="step-num">2</span>
+        Zo haal je het maximale uit je panelen
+      </button>
+    </div>
+
+    <!-- ════════════ STEP 1: SALDERING IMPACT ════════════ -->
+    <div class="calc-step" id="step-1" style="display: block;">
+      <div class="step-header">
+        <span class="label">Stap 1 — Jouw situatie</span>
+        <h2>Wat verandert er voor jouw zonnepanelen?</h2>
+        <p>Vul je situatie in. Wij berekenen wat het einde van saldering voor jou betekent — en of actie nodig is.</p>
+      </div>
+      <div class="calc-grid">
+        <div class="calc-inputs">
+          <div class="calc-field">
+            <label>Aantal zonnepanelen</label>
+            <input type="range" id="panels" min="4" max="30" value="12">
+            <div class="calc-range-labels"><span>4 panelen</span><span>30 panelen</span></div>
+            <div class="calc-value" id="panels-val">12 panelen</div>
+          </div>
+          <div class="calc-field">
+            <label>Jaarlijks stroomverbruik</label>
+            <input type="range" id="usage" min="1500" max="8000" value="3500" step="100">
+            <div class="calc-range-labels"><span>1.500 kWh</span><span>8.000 kWh</span></div>
+            <div class="calc-value" id="usage-val">3.500 kWh</div>
+          </div>
+          <div class="calc-field">
+            <label>Stroomtarief (inkoop per kWh)</label>
+            <input type="range" id="tariff" min="20" max="50" value="34" step="1">
+            <div class="calc-range-labels"><span>€0,20</span><span>€0,50</span></div>
+            <div class="calc-value" id="tariff-val">€0,34/kWh</div>
+          </div>
+          <div class="calc-field">
+            <label>Verwachte terugleververgoeding (na 2027)</label>
+            <input type="range" id="feedin" min="3" max="15" value="7" step="0.5">
+            <div class="calc-range-labels"><span>€0,03</span><span>€0,15</span></div>
+            <div class="calc-value" id="feedin-val">€0,07/kWh</div>
+          </div>
+        </div>
+        <div class="calc-result">
+          <div class="result-impact">
+            <div class="impact-now">
+              <div class="impact-label">Jouw besparing mét saldering <span class="impact-year">(2026, 64%)</span></div>
+              <div class="impact-number" id="res-saving-now">€ 1.428</div>
+            </div>
+            <div class="impact-divider">
+              <span class="impact-arrow-down">▼</span>
+            </div>
+            <div class="impact-after">
+              <div class="impact-label">Jouw besparing zónder saldering <span class="impact-year">(2027+)</span></div>
+              <div class="impact-number dim" id="res-saving-after">€ 847</div>
+              <div class="impact-sub">alleen zelfverbruik + terugleververgoeding</div>
+            </div>
+          </div>
+          <div class="impact-loss-box">
+            <div class="loss-label">Jij verliest per jaar</div>
+            <div class="loss-number" id="res-loss">– € 581</div>
+            <div class="loss-sub">als je niets verandert aan je situatie</div>
+          </div>
+          <div class="result-breakdown" style="margin-top: 24px;">
+            <div class="result-row">
+              <span>Geschatte jaarproductie</span>
+              <span id="res-production">4.200 kWh</span>
+            </div>
+            <div class="result-row">
+              <span>Direct zelfverbruik (~35%)</span>
+              <span id="res-selfuse">1.470 kWh</span>
+            </div>
+            <div class="result-row">
+              <span>Overschot → net</span>
+              <span id="res-surplus">2.730 kWh</span>
+            </div>
+          </div>
+          <button class="result-cta" id="goto-step2" type="button">Dit wil ik oplossen — toon oplossingen →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ STEP 2: SOLUTIONS ════════════ -->
+    <div class="calc-step" id="step-2" style="display: none;">
+      <div class="step-header">
+        <span class="label">Stap 2 — Jouw strategie</span>
+        <h2>Zo haal je het maximale uit je panelen</h2>
+        <p>Schakel opties aan of uit en zie direct het effect. Soms is de slimste keuze: niets doen.</p>
+      </div>
+      <div class="calc-grid">
+        <div class="calc-inputs">
+          <div class="solution-toggle-group">
+            <label class="solution-toggle">
+              <input type="checkbox" id="opt-dynamic" checked>
+              <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              <span class="toggle-label">
+                <strong>Dynamisch contract</strong>
+                <small>Handel op uurprijzen, verkoop op piektarieven</small>
+              </span>
+            </label>
+            <label class="solution-toggle">
+              <input type="checkbox" id="opt-battery" checked>
+              <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              <span class="toggle-label">
+                <strong>Thuisbatterij</strong>
+                <small>Sla overschot op, verhoog zelfverbruik naar ~75%</small>
+              </span>
+            </label>
+            <label class="solution-toggle">
+              <input type="checkbox" id="opt-p2p">
+              <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              <span class="toggle-label">
+                <strong>Peer-to-peer verkoop</strong>
+                <small>Verkoop restoverschot aan andere huishoudens</small>
+              </span>
+            </label>
+            <label class="solution-toggle">
+              <input type="checkbox" id="opt-ere" checked>
+              <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              <span class="toggle-label">
+                <strong>Laadpaal + ERE-credits</strong>
+                <small>Verdien ~€0,10/kWh bij thuisladen van je EV</small>
+              </span>
+            </label>
+          </div>
+          <button id="goto-step1" type="button" class="back-btn">← Terug naar stap 1</button>
+        </div>
+        <div class="calc-result">
+          <div class="result-comparison">
+            <div class="comparison-row loss-row">
+              <span>Verlies door einde saldering</span>
+              <span class="comp-neg" id="res2-loss">– € 581</span>
+            </div>
+            <div class="comparison-divider"></div>
+            <div class="comparison-row" id="row-dynamic">
+              <span>Winst dynamisch contract</span>
+              <span class="comp-pos" id="res2-dynamic">+ € 218</span>
+            </div>
+            <div class="comparison-row" id="row-battery">
+              <span>Winst thuisbatterij</span>
+              <span class="comp-pos" id="res2-battery">+ € 497</span>
+            </div>
+            <div class="comparison-row" id="row-p2p" style="display:none;">
+              <span>Winst peer-to-peer</span>
+              <span class="comp-pos" id="res2-p2p">+ € 135</span>
+            </div>
+            <div class="comparison-row" id="row-ere">
+              <span>Opbrengst ERE-credits (EV laden)</span>
+              <span class="comp-pos" id="res2-ere">+ € 300</span>
+            </div>
+          </div>
+          <div class="net-result-box positive" id="net-result-box">
+            <div class="net-label">Netto resultaat ten opzichte van saldering (2026)</div>
+            <div class="net-number" id="net-number">+ € 134</div>
+            <div class="net-sub" id="net-sub">per jaar beter af dan je huidige situatie</div>
+          </div>
+          <div class="result-breakdown" style="margin-top: 20px;">
+            <div class="result-row">
+              <span>Nieuwe totale jaarlijkse besparing</span>
+              <span id="res2-total-saving">€ 981</span>
+            </div>
+          </div>
+          <a href="#partners" class="result-cta">Lees meer over je opties →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .calc-section { background: var(--leaf-dark); color: white; position: relative; overflow: hidden; }
+  .calc-section::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -20%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(245,166,35,0.08), transparent 60%);
+  }
+  .calc-section h2 { color: white; }
+  .calc-section p { color: rgba(255,255,255,0.7); }
+  .calc-section .label { background: rgba(255,255,255,0.12); color: var(--sun-light); }
+  .calc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-top: 48px;
+    align-items: start;
+  }
+  .calc-inputs { display: flex; flex-direction: column; gap: 28px; }
+  .calc-field label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 10px;
+    letter-spacing: 0.03em;
+  }
+  .calc-field input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.15);
+    outline: none;
+  }
+  .calc-field input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--sun);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(245,166,35,0.4);
+    transition: transform 0.2s;
+  }
+  .calc-field input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+  }
+  .calc-range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+  }
+  .calc-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    color: var(--sun-light);
+    margin-top: 4px;
+  }
+  .calc-result {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius);
+    padding: 36px;
+  }
+  .result-impact { margin-bottom: 20px; }
+  .impact-now, .impact-after { padding: 20px 0; }
+  .impact-label { font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+  .impact-year { color: rgba(255,255,255,0.35); font-weight: 400; }
+  .impact-number { font-family: 'DM Serif Display', serif; font-size: 2.4rem; color: var(--sun); }
+  .impact-number.dim { color: rgba(255,255,255,0.45); }
+  .impact-sub { font-size: 0.82rem; color: rgba(255,255,255,0.4); margin-top: 2px; }
+  .impact-divider {
+    text-align: center;
+    padding: 4px 0;
+    color: rgba(255,255,255,0.2);
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .impact-loss-box {
+    background: rgba(220,53,69,0.12);
+    border: 1px solid rgba(220,53,69,0.25);
+    border-radius: var(--radius-sm);
+    padding: 22px 24px;
+    text-align: center;
+  }
+  .loss-label {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .loss-number { font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: #FF6B6B; }
+  .loss-sub { font-size: 0.82rem; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+  /* Step navigation */
+  .calc-steps-nav {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0; margin-bottom: 48px;
+  }
+  .calc-step-tab {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.5);
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 10px;
+    transition: all 0.3s;
+  }
+  .calc-step-tab:hover { background: rgba(255,255,255,0.1); }
+  .calc-step-tab.active {
+    background: rgba(255,255,255,0.14);
+    border-color: var(--sun);
+    color: white;
+  }
+  .step-num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .calc-step-tab.active .step-num { background: var(--sun); color: var(--leaf-dark); }
+  .step-connector { width: 40px; height: 2px; background: rgba(255,255,255,0.15); flex-shrink: 0; }
+  .step-header { margin-bottom: 40px; }
+  .step-header h2 { color: white; }
+  .step-header p { color: rgba(255,255,255,0.7); }
+
+  /* Solution toggles */
+  .solution-toggle-group { display: flex; flex-direction: column; gap: 16px; }
+  .solution-toggle {
+    display: flex; align-items: center; gap: 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-sm);
+    padding: 20px 22px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .solution-toggle:hover { background: rgba(255,255,255,0.09); }
+  .solution-toggle input { display: none; }
+  .toggle-track {
+    width: 48px; height: 28px; min-width: 48px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.15);
+    position: relative;
+    transition: background 0.3s;
+  }
+  .toggle-thumb {
+    position: absolute; top: 3px; left: 3px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    transition: all 0.3s;
+  }
+  .solution-toggle input:checked + .toggle-track { background: var(--leaf-light); }
+  .solution-toggle input:checked + .toggle-track .toggle-thumb { left: 23px; background: white; }
+  .toggle-label strong { display: block; color: white; font-size: 0.95rem; margin-bottom: 2px; }
+  .toggle-label small { color: rgba(255,255,255,0.45); font-size: 0.82rem; }
+  .back-btn {
+    background: none; border: none; color: var(--sun-light);
+    cursor: pointer; font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
+    padding: 12px 0; opacity: 0.7; transition: opacity 0.2s;
+  }
+  .back-btn:hover { opacity: 1; }
+
+  /* Comparison result */
+  .result-comparison { margin-bottom: 20px; }
+  .comparison-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 0.95rem;
+  }
+  .comparison-row span:first-child { color: rgba(255,255,255,0.7); }
+  .comp-neg { color: #FF6B6B; font-weight: 700; font-size: 1.05rem; }
+  .comp-pos { color: #69DB7C; font-weight: 700; font-size: 1.05rem; }
+  .comparison-divider { height: 1px; background: rgba(255,255,255,0.12); margin: 4px 0; }
+  .loss-row { background: rgba(220,53,69,0.08); border-radius: 8px; padding: 14px 16px; margin-bottom: 4px; }
+  .net-result-box { border-radius: var(--radius-sm); padding: 24px; text-align: center; margin-top: 16px; }
+  .net-result-box.positive { background: rgba(105,219,124,0.1); border: 1px solid rgba(105,219,124,0.25); }
+  .net-result-box.negative { background: rgba(220,53,69,0.1); border: 1px solid rgba(220,53,69,0.25); }
+  .net-label { font-size: 0.82rem; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-bottom: 6px; }
+  .net-number { font-family: 'DM Serif Display', serif; font-size: 2.4rem; }
+  .net-result-box.positive .net-number { color: #69DB7C; }
+  .net-result-box.negative .net-number { color: #FF6B6B; }
+  .net-sub { font-size: 0.82rem; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+  .result-cta {
+    display: block; text-align: center; margin-top: 28px; padding: 16px;
+    background: var(--sun); color: var(--leaf-dark);
+    border-radius: 100px; text-decoration: none; font-weight: 700;
+    font-size: 1rem; transition: all 0.3s; border: none; cursor: pointer; width: 100%;
+  }
+  .result-cta:hover { background: var(--sun-light); transform: translateY(-2px); }
+
+  .result-breakdown { display: flex; flex-direction: column; gap: 16px; }
+  .result-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; }
+  .result-row span:first-child { color: rgba(255,255,255,0.7); }
+  .result-row span:last-child { color: white; font-weight: 600; }
+
+  @media (max-width: 900px) {
+    .calc-steps-nav { flex-direction: column; gap: 8px; }
+    .step-connector { width: 2px; height: 20px; }
+    .calc-step-tab { font-size: 0.82rem; padding: 12px 20px; }
+    .calc-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  const $ = (id: string) => document.getElementById(id)!;
+  const fmt = (n: number) => n.toLocaleString('nl-NL');
+
+  const panelsInput = $('panels') as HTMLInputElement;
+  const usageInput = $('usage') as HTMLInputElement;
+  const tariffInput = $('tariff') as HTMLInputElement;
+  const feedinInput = $('feedin') as HTMLInputElement;
+
+  const step1 = $('step-1');
+  const step2 = $('step-2');
+  const tabs = document.querySelectorAll('.calc-step-tab');
+
+  function showStep(n: number) {
+    step1.style.display = n === 1 ? 'block' : 'none';
+    step2.style.display = n === 2 ? 'block' : 'none';
+    tabs.forEach(t => t.classList.toggle('active', parseInt((t as HTMLElement).dataset.step!) === n));
+    if (n === 2) calcStep2();
+    document.getElementById('rekentool')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  $('goto-step2').addEventListener('click', () => showStep(2));
+  $('goto-step1').addEventListener('click', () => showStep(1));
+  tabs.forEach(t => t.addEventListener('click', () => showStep(parseInt((t as HTMLElement).dataset.step!))));
+
+  let state: any = {};
+
+  function calcStep1() {
+    const panels = parseInt(panelsInput.value);
+    const usage = parseInt(usageInput.value);
+    const tariff = parseInt(tariffInput.value) / 100;
+    const feedin = parseFloat(feedinInput.value) / 100;
+
+    const production = panels * 350;
+    const selfUseRatio = 0.35;
+    const selfUse = Math.round(Math.min(production * selfUseRatio, usage));
+    const surplus = production - selfUse;
+
+    const salderingPct = 0.64;
+    const salderedKwh = Math.round(Math.min(surplus * salderingPct, usage - selfUse));
+    const savingSelfUse = selfUse * tariff;
+    const savingSaldered = salderedKwh * tariff;
+    const unsalderedSurplus2026 = surplus - salderedKwh;
+    const savingFeedin2026 = unsalderedSurplus2026 * feedin;
+    const savingWithSaldering = Math.round(savingSelfUse + savingSaldered + savingFeedin2026);
+
+    const savingFeedinAll = surplus * feedin;
+    const savingWithout = Math.round(savingSelfUse + savingFeedinAll);
+
+    const loss = savingWithout - savingWithSaldering;
+
+    $('panels-val').textContent = panels + ' panelen';
+    $('usage-val').textContent = fmt(usage) + ' kWh';
+    $('tariff-val').textContent = '€' + tariff.toFixed(2).replace('.', ',') + '/kWh';
+    $('feedin-val').textContent = '€' + feedin.toFixed(2).replace('.', ',') + '/kWh';
+
+    $('res-saving-now').textContent = '€ ' + fmt(savingWithSaldering);
+    $('res-saving-after').textContent = '€ ' + fmt(savingWithout);
+    $('res-loss').textContent = '– € ' + fmt(Math.abs(loss));
+    $('res-production').textContent = fmt(production) + ' kWh';
+    $('res-selfuse').textContent = fmt(selfUse) + ' kWh';
+    $('res-surplus').textContent = fmt(surplus) + ' kWh';
+
+    state = { panels, usage, tariff, feedin, production, selfUse, surplus, savingWithSaldering, savingWithout, loss };
+  }
+
+  function calcStep2() {
+    const { surplus, tariff, feedin, savingWithSaldering, savingWithout, loss, selfUse } = state;
+    const dynOn = ($('opt-dynamic') as HTMLInputElement).checked;
+    const batOn = ($('opt-battery') as HTMLInputElement).checked;
+    const p2pOn = ($('opt-p2p') as HTMLInputElement).checked;
+    const ereOn = ($('opt-ere') as HTMLInputElement).checked;
+
+    const dynamicBenefit = dynOn ? Math.round(surplus * 0.08) : 0;
+    const batteryShiftKwh = batOn ? surplus * 0.40 : 0;
+    const batteryBenefit = Math.round(batteryShiftKwh * (tariff - feedin));
+    const remainingSurplus = surplus - batteryShiftKwh;
+    const p2pBenefit = p2pOn ? Math.round(remainingSurplus * 0.05) : 0;
+    const ereKwh = 3000;
+    const ereBenefit = ereOn ? Math.round(ereKwh * 0.10) : 0;
+
+    const totalGain = dynamicBenefit + batteryBenefit + p2pBenefit + ereBenefit;
+    const net = totalGain + loss;
+    const newSaving = savingWithout + totalGain;
+
+    $('res2-loss').textContent = '– € ' + fmt(Math.abs(loss));
+    $('res2-dynamic').textContent = '+ € ' + fmt(dynamicBenefit);
+    $('res2-battery').textContent = '+ € ' + fmt(batteryBenefit);
+    $('res2-p2p').textContent = '+ € ' + fmt(p2pBenefit);
+    $('res2-ere').textContent = '+ € ' + fmt(ereBenefit);
+
+    $('row-dynamic').style.display = dynOn ? 'flex' : 'none';
+    $('row-battery').style.display = batOn ? 'flex' : 'none';
+    $('row-p2p').style.display = p2pOn ? 'flex' : 'none';
+    $('row-ere').style.display = ereOn ? 'flex' : 'none';
+
+    const box = $('net-result-box');
+    if (net >= 0) {
+      box.className = 'net-result-box positive';
+      $('net-number').textContent = '+ € ' + fmt(net);
+      $('net-sub').textContent = 'per jaar beter af dan met saldering (2026)';
+    } else {
+      box.className = 'net-result-box negative';
+      $('net-number').textContent = '– € ' + fmt(Math.abs(net));
+      $('net-sub').textContent = 'resterend verlies — overweeg extra oplossingen';
+    }
+    $('res2-total-saving').textContent = '€ ' + fmt(newSaving);
+  }
+
+  [panelsInput, usageInput, tariffInput, feedinInput].forEach(el =>
+    el.addEventListener('input', () => { calcStep1(); if (step2.style.display !== 'none') calcStep2(); })
+  );
+  [$('opt-dynamic'), $('opt-battery'), $('opt-p2p'), $('opt-ere')].forEach(el =>
+    el.addEventListener('change', calcStep2)
+  );
+
+  calcStep1();
+</script>

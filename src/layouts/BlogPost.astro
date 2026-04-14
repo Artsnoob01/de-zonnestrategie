@@ -1,0 +1,255 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+interface Props {
+  title: string;
+  seoTitle: string;
+  description: string;
+  publishDate: Date;
+  updatedDate?: Date;
+  tags: string[];
+  category: string;
+  relatedSlugs: string[];
+  isPillar?: boolean;
+  slug: string;
+}
+
+const { title, seoTitle, description, publishDate, updatedDate, tags, category, relatedSlugs, isPillar = false, slug } = Astro.props;
+
+const dateStr = publishDate.toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' });
+const updatedStr = updatedDate?.toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const categoryLabels: Record<string, string> = {
+  strategie: 'Strategie',
+  energiewet: 'Energiewet',
+  technologie: 'Technologie',
+  financieel: 'Financieel',
+};
+
+const schemaMarkup = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": description,
+  "datePublished": publishDate.toISOString(),
+  ...(updatedDate && { "dateModified": updatedDate.toISOString() }),
+  "author": {
+    "@type": "Person",
+    "name": "Thierry Boonstra"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "De Zonnestrategie",
+    "url": "https://dezonnestrategie.nl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": `https://dezonnestrategie.nl/blog/${slug}/`
+  }
+});
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={description}
+  schemaMarkup={schemaMarkup}
+  type="article"
+>
+
+<article class="blog-article">
+  <div class="container">
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumbs" aria-label="Breadcrumbs">
+      <a href="/">Home</a>
+      <span>/</span>
+      <a href="/blog/">Blog</a>
+      <span>/</span>
+      <span class="current">{title}</span>
+    </nav>
+
+    <!-- Header -->
+    <header class="article-header">
+      <div class="article-meta-top">
+        <span class="article-category">{categoryLabels[category] || category}</span>
+        {isPillar && <span class="pillar-tag">Pillar artikel</span>}
+      </div>
+      <h1>{title}</h1>
+      <div class="article-meta">
+        <time datetime={publishDate.toISOString()}>Gepubliceerd op {dateStr}</time>
+        {updatedStr && <span class="updated">· Bijgewerkt op {updatedStr}</span>}
+        <span class="author">· Door Thierry Boonstra</span>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="prose">
+      <slot />
+    </div>
+
+    <!-- Calculator CTA -->
+    <div class="article-cta">
+      <h3>Benieuwd wat dit voor jouw situatie betekent?</h3>
+      <p>Gebruik onze rekentool om te berekenen wat het einde van saldering voor jou kost — en welke strategie het beste past.</p>
+      <a href="/#rekentool" class="btn-primary">Bereken je situatie →</a>
+    </div>
+
+    <!-- Related articles -->
+    <RelatedArticles currentSlug={slug} relatedSlugs={relatedSlugs} />
+  </div>
+</article>
+
+</BaseLayout>
+
+<style>
+  .blog-article {
+    padding-top: 120px;
+    padding-bottom: 80px;
+  }
+  .blog-article .container {
+    max-width: 780px;
+  }
+
+  /* Breadcrumbs */
+  .breadcrumbs {
+    display: flex;
+    gap: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .breadcrumbs a {
+    color: var(--leaf);
+    text-decoration: none;
+  }
+  .breadcrumbs a:hover { text-decoration: underline; }
+  .breadcrumbs span { color: var(--ink-soft); }
+  .breadcrumbs .current {
+    color: var(--ink-soft);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 300px;
+  }
+
+  /* Header */
+  .article-header { margin-bottom: 48px; }
+  .article-meta-top {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .article-category {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--leaf-light);
+    background: rgba(45,106,79,0.08);
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+  .pillar-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--leaf-dark);
+    background: linear-gradient(135deg, var(--sun-light), var(--sun-glow));
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+  .article-header h1 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .article-meta {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .updated, .author { color: var(--ink-soft); }
+
+  /* Prose */
+  .prose {
+    font-size: 1.08rem;
+    line-height: 1.8;
+    color: var(--ink-soft);
+  }
+  .prose :global(h2) {
+    font-size: 1.5rem;
+    color: var(--leaf-dark);
+    margin-top: 48px;
+    margin-bottom: 16px;
+  }
+  .prose :global(h3) {
+    font-size: 1.2rem;
+    color: var(--ink);
+    margin-top: 36px;
+    margin-bottom: 12px;
+  }
+  .prose :global(p) {
+    margin-bottom: 20px;
+    color: var(--ink-soft);
+    font-size: 1.08rem;
+    line-height: 1.8;
+  }
+  .prose :global(strong) { color: var(--ink); }
+  .prose :global(a) {
+    color: var(--leaf);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .prose :global(a:hover) { color: var(--leaf-dark); }
+  .prose :global(ul), .prose :global(ol) {
+    margin-bottom: 20px;
+    padding-left: 24px;
+  }
+  .prose :global(li) {
+    margin-bottom: 8px;
+    line-height: 1.7;
+  }
+  .prose :global(blockquote) {
+    border-left: 3px solid var(--sun);
+    padding-left: 20px;
+    margin: 28px 0;
+    color: var(--ink);
+    font-style: italic;
+  }
+  .prose :global(hr) {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+  .prose :global(em) {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+
+  /* CTA */
+  .article-cta {
+    background: linear-gradient(135deg, var(--leaf) 0%, var(--leaf-dark) 100%);
+    border-radius: var(--radius);
+    padding: 40px;
+    text-align: center;
+    margin-top: 56px;
+  }
+  .article-cta h3 {
+    color: white;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+  }
+  .article-cta p {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.98rem;
+    margin-bottom: 24px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>

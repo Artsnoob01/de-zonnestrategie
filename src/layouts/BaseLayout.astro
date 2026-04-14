@@ -1,0 +1,35 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  schemaMarkup?: string;
+  type?: string;
+  isLanding?: boolean;
+}
+
+const { title, description, ogImage, schemaMarkup, type, isLanding = false } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    ogImage={ogImage}
+    schemaMarkup={schemaMarkup}
+    type={type}
+  />
+</head>
+<body>
+  <Nav isLanding={isLanding} />
+  <slot />
+  <Footer isLanding={isLanding} />
+</body>
+</html>

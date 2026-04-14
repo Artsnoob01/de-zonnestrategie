@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Kennisbank | De Zonnestrategie"
+  description="De Energiewet 2026 uitgelegd: alle begrippen, rechten en mogelijkheden voor zonnepanelenbezitters."
+>
+
+<section class="kennisbank-overview">
+  <div class="container">
+    <div class="kb-header">
+      <span class="label">Kennisbank</span>
+      <h1>De Energiewet-kennisbank</h1>
+      <p>Alles wat je moet weten over de Energiewet 2026, energiedelen, peer-to-peer handel en jouw rechten als actieve afnemer. Deze kennisbank wordt vanaf week 7 stap voor stap uitgebouwd.</p>
+    </div>
+
+    <div class="kb-clusters">
+      <div class="cluster-card">
+        <h3>De basis</h3>
+        <p>Nieuwe energietermen, je rechten als consument, en de slimme meter.</p>
+        <span class="cluster-status">Binnenkort beschikbaar</span>
+      </div>
+      <div class="cluster-card">
+        <h3>Energiedelen</h3>
+        <p>Stroom delen met buren, een energiegemeenschap oprichten, peer-to-peer verkoop.</p>
+        <span class="cluster-status">Binnenkort beschikbaar</span>
+      </div>
+      <div class="cluster-card">
+        <h3>Specifieke groepen</h3>
+        <p>VvE's, huurders en ZZP'ers: wat verandert er voor jou?</p>
+        <span class="cluster-status">Binnenkort beschikbaar</span>
+      </div>
+      <div class="cluster-card">
+        <h3>Toekomst & flexibiliteit</h3>
+        <p>Aggregatie, netcongestie, en wat er nog komt (AMvB, EMD-pakket).</p>
+        <span class="cluster-status">Binnenkort beschikbaar</span>
+      </div>
+    </div>
+
+    <div class="kb-cta">
+      <p>In de tussentijd kun je onze <a href="/blog/">blogartikelen</a> lezen over de salderingsregeling, thuisbatterijen en dynamische contracten.</p>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>
+
+<style>
+  .kennisbank-overview {
+    padding-top: 140px;
+    padding-bottom: 80px;
+  }
+  .kb-header {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 64px;
+  }
+  .kb-header p { margin-top: 12px; font-size: 1.1rem; }
+  .kb-clusters {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  .cluster-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+  }
+  .cluster-card h3 { margin-bottom: 10px; }
+  .cluster-card p { font-size: 0.95rem; margin-bottom: 16px; }
+  .cluster-status {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--sun);
+    background: var(--sun-glow);
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+  .kb-cta {
+    text-align: center;
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+  }
+  .kb-cta a { color: var(--leaf); font-weight: 600; }
+</style>

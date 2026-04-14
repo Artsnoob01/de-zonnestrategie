@@ -1,0 +1,64 @@
+---
+interface Props {
+  isLanding?: boolean;
+}
+const { isLanding = false } = Astro.props;
+const ctaHref = isLanding ? "#rekentool" : "/#rekentool";
+---
+
+<section class="footer-cta">
+  <div class="container">
+    <h2>Benieuwd wat de slimste aanpak is voor jouw situatie?</h2>
+    <p>De energiemarkt verandert. Ontdek wat dat voor jou betekent — en of actie nodig is.</p>
+    <a href={ctaHref} class="btn-primary">Bereken je situatie →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="nav-logo">
+          <div class="sun-icon"></div>
+          De Zonnestrategie
+        </a>
+        <p style="margin-top: 12px;">Wij helpen je de juiste keuzes te maken voor je zonnepanelen — ook na het einde van de saldering. Onafhankelijk, juridisch onderbouwd, zonder commercieel belang.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Informatie</h4>
+        {isLanding ? (
+          <>
+            <a href="#wat-verandert">Wat verandert er?</a>
+            <a href="#opties">Jouw opties</a>
+            <a href="#energiewet">De Energiewet</a>
+            <a href="#faq">Veelgestelde vragen</a>
+          </>
+        ) : (
+          <>
+            <a href="/">Home</a>
+            <a href="/#wat-verandert">Wat verandert er?</a>
+            <a href="/#opties">Jouw opties</a>
+            <a href="/#faq">Veelgestelde vragen</a>
+          </>
+        )}
+      </div>
+      <div class="footer-col">
+        <h4>Content</h4>
+        <a href="/blog/">Blog</a>
+        <a href={ctaHref}>Rekentool</a>
+        <a href="/kennisbank/">Kennisbank</a>
+      </div>
+      <div class="footer-col">
+        <h4>Over ons</h4>
+        <a href="/over">Over De Zonnestrategie</a>
+        <a href="/privacy">Privacy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 De Zonnestrategie</span>
+      <div class="footer-disclaimer">
+        * Berekeningen zijn indicatief en gebaseerd op gemiddelde marktdata. Werkelijke opbrengsten kunnen afwijken. Wij zijn geen financieel adviseur.
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  currentSlug: string;
+  relatedSlugs: string[];
+}
+
+const { currentSlug, relatedSlugs } = Astro.props;
+
+const allPosts = await getCollection('blog');
+const related = relatedSlugs
+  .map(slug => allPosts.find(p => p.slug === slug))
+  .filter((p): p is NonNullable<typeof p> => p != null && p.slug !== currentSlug)
+  .slice(0, 3);
+---
+
+{related.length > 0 && (
+  <aside class="related-articles">
+    <h3>Gerelateerde artikelen</h3>
+    <div class="related-grid">
+      {related.map(post => (
+        <a href={`/blog/${post.slug}/`} class="related-card">
+          <span class="related-title">{post.data.title}</span>
+          <span class="related-desc">{post.data.description}</span>
+        </a>
+      ))}
+    </div>
+  </aside>
+)}
+
+<style>
+  .related-articles {
+    margin-top: 64px;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+  }
+  h3 {
+    font-size: 1.3rem;
+    color: var(--leaf-dark);
+    margin-bottom: 24px;
+  }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  .related-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 24px;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .related-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+  .related-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .related-desc {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+</style>

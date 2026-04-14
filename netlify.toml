@@ -1,0 +1,16 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/slimterugleveren"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/slimterugleveren.html"
+  to = "/"
+  status = 301

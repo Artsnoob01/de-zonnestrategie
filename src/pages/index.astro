@@ -1,0 +1,561 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Calculator from '../components/Calculator.astro';
+
+const schemaMarkup = JSON.stringify([
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "De Zonnestrategie",
+    "url": "https://dezonnestrategie.nl",
+    "description": "Onafhankelijk advies over zonnepanelen, de Energiewet en slim omgaan met energie."
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Mag ik als particulier echt stroom verkopen aan mijn buurman?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Ja. De nieuwe Energiewet introduceert de 'actieve afnemer': een eindafnemer die ook stroom opwekt en deze mag leveren, delen of via P2P verkopen. Je hebt hiervoor geen vergunning nodig, mits je op jaarbasis niet meer levert dan je invoert." }
+      },
+      {
+        "@type": "Question",
+        "name": "Wat is het verschil tussen energie delen en peer-to-peer?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Bij energie delen rekent je leverancier de stroom administratief toe aan andere klanten — je wordt zelf geen leverancier. Bij peer-to-peer verkoop je stroom via een gereguleerd platform en ontstaat er een leveringsovereenkomst." }
+      },
+      {
+        "@type": "Question",
+        "name": "Heb ik een thuisbatterij nodig als de saldering stopt?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Niet per se, maar het wordt steeds aantrekkelijker. Zonder saldering ontvang je alleen een terugleververgoeding terwijl je inkoop veel hoger is. Een thuisbatterij laat je meer stroom zelf gebruiken." }
+      },
+      {
+        "@type": "Question",
+        "name": "Waarom een dynamisch contract?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Met een dynamisch contract betaal je de werkelijke uurprijs van stroom. Als je een thuisbatterij hebt, kun je goedkoop inkopen en duur terugleveren." }
+      },
+      {
+        "@type": "Question",
+        "name": "Hoe werken ERE-credits en hoeveel levert dat op?",
+        "acceptedAnswer": { "@type": "Answer", "text": "ERE staat voor Emissie Reductie Eenheden. Door de Europese RED3-richtlijn moeten oliemaatschappijen compenseren. Als jij thuis je EV oplaadt via een laadpaal met MID-meter, genereer je die certificaten. De waarde ligt rond €0,10 per kWh." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is dit advies onafhankelijk?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Ja. De Zonnestrategie is een onafhankelijk informatieplatform zonder affiliate-links of gesponsorde aanbevelingen." }
+      }
+    ]
+  }
+]);
+---
+
+<BaseLayout
+  title="De Zonnestrategie — Zonnepanelen blijven slim, ook na 2027"
+  description="Onafhankelijk advies over zonnepanelen en de Energiewet 2026. Bereken wat het einde van saldering voor jou betekent."
+  schemaMarkup={schemaMarkup}
+  isLanding={true}
+>
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <span class="label">Nieuwe Energiewet 2026</span>
+        <h1>Zonnepanelen blijven slim. <em>Hier is waarom.</em></h1>
+        <p class="hero-sub">De salderingsregeling stopt in 2027. Maar met de nieuwe Energiewet, thuisbatterijen en slimme strategieën blijven zonnepanelen een uitstekende investering. Onafhankelijk advies — ook als het antwoord "doe niets" is.</p>
+        <div class="hero-buttons">
+          <a href="#rekentool" class="btn-primary">Bereken je situatie →</a>
+          <a href="#opties" class="btn-secondary">Bekijk je opties</a>
+        </div>
+        <div class="trust-row">
+          <div class="trust-item">
+            <div class="trust-check">✓</div>
+            Onafhankelijk advies
+          </div>
+          <div class="trust-item">
+            <div class="trust-check">✓</div>
+            Gebaseerd op de Energiewet
+          </div>
+          <div class="trust-item">
+            <div class="trust-check">✓</div>
+            Geen verborgen kosten
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card-stack">
+          <div class="hero-stat" style="position:relative;">
+            <div class="hero-badge">Nieuw</div>
+            <div class="stat-label">Saldering in 2026</div>
+            <div class="stat-value">64% <span class="stat-change">↓ was 100%</span></div>
+            <div class="stat-detail">Elk jaar minder terug — in 2027 stopt het helemaal</div>
+          </div>
+          <div class="hero-stat">
+            <div class="stat-label">Dynamisch contract + thuisbatterij</div>
+            <div class="stat-value" style="color: var(--sun);">Tot €900/jr</div>
+            <div class="stat-detail">Extra besparing bovenop je huidige situatie</div>
+          </div>
+          <div class="hero-stat">
+            <div class="stat-label">Actieve afnemer via Energiewet</div>
+            <div class="stat-value">3 nieuwe opties</div>
+            <div class="stat-detail">Leveren · Delen · Peer-to-peer verkoop</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ TIMELINE ═══════════════════════ -->
+<section class="timeline-section" id="wat-verandert">
+  <div class="container">
+    <div class="section-header">
+      <span class="label">De feiten op een rij</span>
+      <h2>Wat verandert er voor zonnepanelenbezitters?</h2>
+      <p>De overgang van de Elektriciteitswet 1998 naar de nieuwe Energiewet is de grootste verandering op de energiemarkt in 25 jaar. Dit is wat het voor jou betekent.</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">1998 — Elektriciteitswet</div>
+        <div class="timeline-text">Stroom leveren mocht alleen met vergunning. De consument was <strong>passief</strong>: je kocht stroom van je leverancier, en dat was het.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2023 — Afbouw saldering begint</div>
+        <div class="timeline-text">De eerste stap: je mag nog maar <strong>91%</strong> van je teruggeleverde stroom salderen. In 2024 daalt dit naar 82%, in 2025 naar 73% en in 2026 naar 64%.</div>
+      </div>
+      <div class="timeline-item active">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2026 — De Energiewet treedt in werking</div>
+        <div class="timeline-text">De Energiewet vervangt de Elektriciteitswet 1998. De <strong>actieve afnemer</strong> wordt een wettelijk erkende marktrol. Jij mag als zonnepanelenbezitter stroom verkopen aan je buurman — <strong>zonder vergunning</strong>. Energiedelen wordt mogelijk bij dezelfde leverancier.</div>
+      </div>
+      <div class="timeline-item future">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2027 — Saldering stopt volledig</div>
+        <div class="timeline-text">Geen verrekening meer. Je ontvangt alleen nog een <strong>terugleververgoeding</strong> (minimaal 50% van het kale leveringstarief tot 2030). Zelfverbruik, opslag en slim terugleveren worden essentieel.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ VIER PIJLERS ═══════════════════════ -->
+<section id="opties">
+  <div class="container">
+    <div class="section-header">
+      <span class="label">Jouw slim energie-ecosysteem</span>
+      <h2>Vier slimme stappen voor na 2027</h2>
+      <p>De energietransitie biedt een compleet ecosysteem aan mogelijkheden. Niet alles is voor iedereen nodig — wij helpen je de juiste keuze maken.</p>
+    </div>
+    <div class="options-grid four-col">
+      <div class="option-card">
+        <div class="option-icon">☀️</div>
+        <h3>Slim terugleveren</h3>
+        <p>Met een dynamisch contract verkoop je stroom wanneer de prijs hoog is. De Energiewet geeft je daarnaast drie nieuwe routes: direct leveren, energie delen of peer-to-peer verkoop.</p>
+        <div class="option-savings">
+          <span class="savings-label">Besparing</span>
+          <span class="savings-value">€ 150 – 400/jr</span>
+        </div>
+        <div>
+          <span class="option-tag tag-easy">Dynamisch contract</span>
+          <span class="option-tag tag-medium">Energiewet 2026</span>
+        </div>
+      </div>
+      <div class="option-card">
+        <div class="option-icon">🔋</div>
+        <h3>Thuisbatterij</h3>
+        <p>Sla je overschot op en gebruik het 's avonds. Met een dynamisch contract handel je automatisch op prijsverschillen: goedkoop inkopen, duur terugleveren. Zelfverbruik stijgt naar 70-80%.</p>
+        <div class="option-savings">
+          <span class="savings-label">Besparing</span>
+          <span class="savings-value">€ 300 – 700/jr</span>
+        </div>
+        <div>
+          <span class="option-tag tag-easy">21% btw terug</span>
+          <span class="option-tag tag-advanced">Slim handelen</span>
+        </div>
+      </div>
+      <div class="option-card">
+        <div class="option-icon">🚗</div>
+        <h3>Laadpaal + ERE-credits</h3>
+        <p>Laad je EV thuis op met je eigen zonnestroom. Dankzij ERE-certificaten verdien je ~€0,10 per geladen kWh — betaald door oliemaatschappijen. Tot €500/jaar extra.</p>
+        <div class="option-savings">
+          <span class="savings-label">Opbrengst ERE</span>
+          <span class="savings-value">€ 200 – 500/jr</span>
+        </div>
+        <div>
+          <span class="option-tag tag-medium">MID-meter vereist</span>
+          <span class="option-tag tag-easy">Nieuw in 2026</span>
+        </div>
+      </div>
+      <div class="option-card">
+        <div class="option-icon">⚡</div>
+        <h3>Energiewet-opties</h3>
+        <p>De nieuwe Energiewet erkent jou als 'actieve afnemer'. Je mag stroom verkopen aan je buurman (zonder vergunning), delen via je leverancier, of aanbieden via een P2P-platform.</p>
+        <div class="option-savings">
+          <span class="savings-label">Potentieel</span>
+          <span class="savings-value">Groeiend</span>
+        </div>
+        <div>
+          <span class="option-tag tag-easy">Energie delen 2026</span>
+          <span class="option-tag tag-advanced">P2P via platform</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ ERE UITLEG ═══════════════════════ -->
+<section style="background: var(--sky);" id="ere">
+  <div class="container">
+    <div class="explainer-grid">
+      <div class="explainer-content">
+        <span class="label">Nieuw in 2026</span>
+        <h2>ERE-credits: oliemaatschappijen betalen jou</h2>
+        <p>Door de Europese RED3-richtlijn moeten brandstofleveranciers hun CO₂-uitstoot compenseren. Dat doen ze door Emissie Reductie Eenheden (ERE's) te kopen — certificaten die aantonen dat er duurzaam is gereden. Als jij thuis laadt, lever jij die certificaten.</p>
+        <p>Het resultaat: voor elke kWh die je thuis laadt ontvang je een vergoeding, betaald door Shell, BP en consorten.</p>
+        <ul class="benefit-list">
+          <li><div class="benefit-icon">💰</div><span><strong>~€0,10 per kWh</strong> — bij 4.000 kWh/jaar is dat €400</span></li>
+          <li><div class="benefit-icon">📋</div><span><strong>MID-meter nodig</strong> — een gecertificeerde meter in je laadpaal (niet in de meterkast)</span></li>
+          <li><div class="benefit-icon">📝</div><span><strong>Registreer via inboekdienstverlener</strong> — bijv. Vattenfall Thuislaadcashback (min. €0,05/kWh garantie)</span></li>
+          <li><div class="benefit-icon">🔌</div><span><strong>Combineer met zonnepanelen</strong> — laad gratis met je eigen stroom én ontvang ERE-vergoeding</span></li>
+        </ul>
+      </div>
+      <div class="explainer-visual">
+        <div class="flow-diagram">
+          <div class="flow-step"><div class="flow-num">1</div><p><strong>Jij laadt je EV thuis</strong> via een laadpaal met MID-meter</p></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step"><div class="flow-num">2</div><p><strong>kWh's worden geregistreerd</strong> bij een inboekdienstverlener</p></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step"><div class="flow-num">3</div><p><strong>ERE-certificaten</strong> worden verhandeld aan brandstofleveranciers</p></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step"><div class="flow-num" style="background: var(--sun);">€</div><p><strong>Jij ontvangt de vergoeding</strong> — Vattenfall garandeert min. €0,05/kWh</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ ENERGIEWET EXPLAINER ═══════════════════════ -->
+<section style="background: var(--sky);" id="energiewet">
+  <div class="container">
+    <div class="explainer-grid">
+      <div class="explainer-visual">
+        <div class="flow-diagram">
+          <div class="flow-step"><div class="flow-num">1</div><p><strong>Jouw zonnepanelen</strong> wekken stroom op achter je meter</p></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step"><div class="flow-num">2</div><p><strong>Overschot</strong> wordt ingevoed op het net (fysieke handeling)</p></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step"><div class="flow-num">3</div><p><strong>Administratieve toerekening</strong> aan een andere afnemer — jouw buurman, VvE, of P2P-platform</p></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step"><div class="flow-num" style="background: var(--sun);">€</div><p><strong>Jij ontvangt een vergoeding</strong> die hoger kan zijn dan de standaard terugleververgoeding</p></div>
+        </div>
+      </div>
+      <div class="explainer-content">
+        <span class="label">Hoe werkt het?</span>
+        <h2>Van fysiek invoeden naar slim vermarkten</h2>
+        <p>Een belangrijk inzicht: elektronen hebben geen namen of rugnummers. Of jouw buurman letterlijk jóuw stroom gebruikt maakt technisch niet uit — het gaat om een <strong>administratieve toerekening</strong>. En dat is precies waar de nieuwe Energiewet meer mogelijkheden biedt.</p>
+        <p>De balanceringsverantwoordelijkheid (het net op 50Hz houden) blijft bij een vergunningplichtige partij. Jij hoeft je daar niet druk over te maken.</p>
+        <ul class="benefit-list">
+          <li><div class="benefit-icon">⚖️</div><span><strong>Geen vergunning nodig</strong> — mits je niet meer levert dan invoert op jaarbasis</span></li>
+          <li><div class="benefit-icon">🛡️</div><span><strong>Consumentenbescherming blijft</strong> — transparante voorwaarden verplicht</span></li>
+          <li><div class="benefit-icon">📊</div><span><strong>Dynamische contracten</strong> maken slim verhandelen mogelijk</span></li>
+          <li><div class="benefit-icon">🔋</div><span><strong>Thuisbatterij</strong> vergroot je zelfverbruik en flexibiliteit</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ CALCULATOR ═══════════════════════ -->
+<Calculator />
+
+<!-- ═══════════════════════ PARTNERS (INFORMATIEF) ═══════════════════════ -->
+<section id="partners">
+  <div class="container">
+    <div class="section-header">
+      <span class="label">Onafhankelijke informatie</span>
+      <h2>Jouw opties op een rij</h2>
+      <p>Geen affiliate-links, geen gesponsorde aanbevelingen. Wij leggen de opties uit zodat jij een weloverwogen keuze maakt.</p>
+    </div>
+    <div class="partners-grid four-col">
+      <div class="partner-card featured">
+        <div class="partner-logo">☀️</div>
+        <div class="partner-name">Dynamisch contract</div>
+        <div class="partner-desc">Betaal de werkelijke uurprijs en profiteer van piektarieven bij teruglevering. De laagdrempeligste stap.</div>
+        <ul class="partner-features">
+          <li>Geen investering nodig</li>
+          <li>Dynamische uurtarieven</li>
+          <li>Vaak geen terugleverkosten</li>
+          <li>Besparing €150-400/jaar</li>
+        </ul>
+        <a href="#rekentool" class="partner-btn partner-btn-primary">Bereken je situatie →</a>
+      </div>
+      <div class="partner-card">
+        <div class="partner-logo">🔋</div>
+        <div class="partner-name">Thuisbatterij</div>
+        <div class="partner-desc">Sla je overschot op en gebruik het zelf. Combineer met een dynamisch contract voor optimaal resultaat.</div>
+        <ul class="partner-features">
+          <li>Zelfverbruik 70-80%</li>
+          <li>Prijzen sterk gedaald</li>
+          <li>21% btw terugvorderbaar (KOR)</li>
+          <li>Terugverdientijd 6-9 jaar</li>
+        </ul>
+        <a href="#rekentool" class="partner-btn partner-btn-outline">Bereken je situatie →</a>
+      </div>
+      <div class="partner-card">
+        <div class="partner-logo">🚗</div>
+        <div class="partner-name">Slim laden + ERE</div>
+        <div class="partner-desc">Laad je EV thuis met zonnestroom en ontvang ERE-credits. Vereist een laadpaal met MID-meter.</div>
+        <ul class="partner-features">
+          <li>~€0,10/kWh ERE-vergoeding</li>
+          <li>Gratis laden met zonnestroom</li>
+          <li>MID-meter vereist</li>
+          <li>Tot €400/jaar extra</li>
+        </ul>
+        <a href="#ere" class="partner-btn partner-btn-outline">Lees meer over ERE →</a>
+      </div>
+      <div class="partner-card">
+        <div class="partner-logo">⚡</div>
+        <div class="partner-name">Energie delen</div>
+        <div class="partner-desc">Deel je stroom met je VvE of buren via je leverancier. In de praktijk nog beperkt beschikbaar.</div>
+        <ul class="partner-features">
+          <li>Geen leveranciersrol nodig</li>
+          <li>Wettelijk mogelijk sinds 2026</li>
+          <li>Praktijk nog in opbouw</li>
+          <li>Ideaal voor VvE's</li>
+        </ul>
+        <a href="#energiewet" class="partner-btn partner-btn-outline">Lees meer →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FAQ ═══════════════════════ -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="section-header">
+      <span class="label">Veelgestelde vragen</span>
+      <h2>Alles wat je wilt weten</h2>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q">Mag ik als particulier echt stroom verkopen aan mijn buurman?<span class="arrow">▾</span></div>
+        <div class="faq-a"><p>Ja. De nieuwe Energiewet introduceert de 'actieve afnemer': een eindafnemer die ook stroom opwekt en deze mag leveren, delen of via P2P verkopen. Je hebt hiervoor geen vergunning nodig, mits je op jaarbasis niet meer levert dan je invoert. Wel moet je transparante contractvoorwaarden hanteren en blijft consumentenbeschermingsrecht van toepassing.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Wat is het verschil tussen energie delen en peer-to-peer?<span class="arrow">▾</span></div>
+        <div class="faq-a"><p>Bij energie delen rekent je leverancier de stroom administratief toe aan andere klanten — je wordt zelf geen leverancier. Bij peer-to-peer (P2P) verkoop je stroom via een gereguleerd platform en ontstaat er wél een leveringsovereenkomst tussen jou en de afnemer. Het platform is vergunningplichtig, jij niet. P2P biedt meer controle over de prijs, energie delen is eenvoudiger.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Heb ik een thuisbatterij nodig als de saldering stopt?<span class="arrow">▾</span></div>
+        <div class="faq-a"><p>Niet per se, maar het wordt steeds aantrekkelijker. Zonder saldering ontvang je alleen een terugleververgoeding (vaak €0,05-0,15/kWh) terwijl je inkoop €0,30-0,50/kWh kost. Een thuisbatterij laat je meer stroom zelf gebruiken en bij een dynamisch contract kun je handelen op prijsverschillen. De btw (21%) is terugvorderbaar als je een dynamisch contract hebt.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Waarom een dynamisch contract?<span class="arrow">▾</span></div>
+        <div class="faq-a"><p>Met een dynamisch contract betaal je de werkelijke uurprijs van stroom. Als je een thuisbatterij hebt, kun je goedkoop inkopen (bijvoorbeeld 's nachts) en duur terugleveren (piektarieven). Bovendien rekenen dynamische leveranciers vaak geen terugleverkosten, wat bij vaste contracten €0,03-0,05/kWh kan zijn. Vergelijk meerdere aanbieders op teruglevervoorwaarden — die verschillen sterk.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Hoe werken ERE-credits en hoeveel levert dat op?<span class="arrow">▾</span></div>
+        <div class="faq-a"><p>ERE staat voor Emissie Reductie Eenheden. Door de Europese RED3-richtlijn moeten oliemaatschappijen compenseren voor hun CO₂-uitstoot door certificaten te kopen. Als jij thuis je EV oplaadt via een laadpaal met MID-meter, genereer je die certificaten. De huidige waarde ligt rond €0,10 per kWh. Bij 3.000 kWh per jaar is dat €300. Vattenfall garandeert minimaal €0,05/kWh via hun Thuislaadcashback-programma. Je hoeft je alleen te registreren via een inboekdienstverlener — aanmelden kan nu al.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is dit advies onafhankelijk?<span class="arrow">▾</span></div>
+        <div class="faq-a"><p>Ja. De Zonnestrategie is een onafhankelijk informatieplatform zonder affiliate-links of gesponsorde aanbevelingen. De juridische analyse is gebaseerd op de tekst van de Energiewet en de parlementaire geschiedenis. Wij verdienen niets aan doorverwijzingen. Ons doel is je helpen de juiste keuze te maken — ook als dat betekent: niets doen.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>
+
+<style>
+  /* ═══════════════════════ LANDING PAGE STYLES ═══════════════════════ */
+  .section-header { text-align: center; max-width: 680px; margin: 0 auto 64px; }
+  .section-header p { margin-top: 12px; font-size: 1.1rem; }
+
+  /* HERO */
+  .hero { padding-top: 160px; padding-bottom: 80px; position: relative; overflow: hidden; }
+  .hero::before {
+    content: ''; position: absolute; top: -100px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(245,166,35,0.12) 0%, transparent 65%);
+    pointer-events: none; animation: sunPulse 6s ease-in-out infinite;
+  }
+  @keyframes sunPulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.08); opacity: 1; } }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center; }
+  .hero-content { position: relative; z-index: 2; }
+  .hero h1 { margin-bottom: 24px; }
+  .hero h1 em { font-style: italic; color: var(--leaf); position: relative; }
+  .hero h1 em::after {
+    content: ''; position: absolute; bottom: 2px; left: 0; right: 0;
+    height: 8px; background: var(--sun-light); opacity: 0.5; border-radius: 4px; z-index: -1;
+  }
+  .hero-sub { font-size: 1.15rem; color: var(--ink-soft); max-width: 520px; margin-bottom: 36px; line-height: 1.75; }
+  .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+  .hero-visual { position: relative; display: flex; justify-content: center; }
+  .hero-card-stack { position: relative; width: 100%; max-width: 420px; }
+  .hero-stat {
+    background: var(--card-bg); border-radius: var(--radius); padding: 28px 32px;
+    box-shadow: var(--shadow); border: 1px solid var(--border);
+    position: relative; animation: fadeSlideUp 0.8s ease-out both;
+  }
+  .hero-stat:nth-child(2) { margin-top: 16px; animation-delay: 0.15s; }
+  .hero-stat:nth-child(3) { margin-top: 16px; animation-delay: 0.3s; }
+  @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-stat .stat-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); margin-bottom: 6px; font-weight: 500; }
+  .hero-stat .stat-value { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--leaf-dark); }
+  .hero-stat .stat-change { display: inline-block; font-size: 0.85rem; font-weight: 600; color: var(--sun); background: var(--sun-glow); padding: 3px 10px; border-radius: 100px; margin-left: 12px; }
+  .hero-stat .stat-detail { font-size: 0.88rem; color: var(--ink-soft); margin-top: 4px; }
+  .hero-badge {
+    position: absolute; top: -16px; right: -12px;
+    background: linear-gradient(135deg, var(--sun), #F7C948); color: var(--leaf-dark);
+    font-weight: 700; font-size: 0.7rem; letter-spacing: 0.05em;
+    padding: 6px 14px; border-radius: 100px;
+    box-shadow: 0 4px 12px rgba(245,166,35,0.3); text-transform: uppercase;
+  }
+  .trust-row { margin-top: 48px; display: flex; gap: 32px; align-items: center; }
+  .trust-item { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: var(--ink-soft); }
+  .trust-check {
+    width: 22px; height: 22px; background: rgba(45,106,79,0.1); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; color: var(--leaf); font-size: 0.75rem; flex-shrink: 0;
+  }
+
+  /* TIMELINE */
+  .timeline-section { background: linear-gradient(180deg, var(--sky) 0%, var(--warm-white) 100%); }
+  .timeline { position: relative; max-width: 800px; margin: 0 auto; }
+  .timeline::before {
+    content: ''; position: absolute; left: 28px; top: 0; bottom: 0;
+    width: 3px; background: linear-gradient(180deg, var(--leaf-light), var(--sun)); border-radius: 3px;
+  }
+  .timeline-item { position: relative; padding-left: 76px; margin-bottom: 48px; }
+  .timeline-dot {
+    position: absolute; left: 16px; top: 4px; width: 27px; height: 27px;
+    background: var(--card-bg); border: 3px solid var(--leaf); border-radius: 50%; z-index: 2;
+  }
+  .timeline-item.active .timeline-dot { background: var(--leaf); box-shadow: 0 0 0 6px rgba(45,106,79,0.15); }
+  .timeline-item.future .timeline-dot { border-color: var(--sun); }
+  .timeline-year { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--leaf-dark); margin-bottom: 6px; }
+  .timeline-text { font-size: 0.98rem; color: var(--ink-soft); line-height: 1.7; }
+  .timeline-text strong { color: var(--ink); }
+
+  /* OPTIONS GRID */
+  .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 56px; }
+  .options-grid.four-col { grid-template-columns: repeat(4, 1fr); }
+  .option-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 32px 26px; transition: all 0.4s; position: relative; overflow: hidden;
+  }
+  .option-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--leaf); transform: scaleX(0); transition: transform 0.4s;
+  }
+  .option-card:hover::before { transform: scaleX(1); }
+  .option-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-4px); }
+  .option-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 20px; }
+  .option-card:nth-child(1) .option-icon { background: rgba(45,106,79,0.1); }
+  .option-card:nth-child(2) .option-icon { background: rgba(245,166,35,0.12); }
+  .option-card:nth-child(3) .option-icon { background: rgba(183,216,230,0.4); }
+  .option-card h3 { margin-bottom: 12px; }
+  .option-card p { font-size: 0.95rem; margin-bottom: 16px; }
+  .option-savings { display: flex; justify-content: space-between; align-items: center; background: var(--sun-glow); border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; }
+  .savings-label { font-size: 0.75rem; font-weight: 600; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+  .savings-value { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--leaf-dark); }
+  .option-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; padding: 5px 12px; border-radius: 100px; margin-right: 6px; margin-bottom: 6px; }
+  .tag-easy { background: rgba(45,106,79,0.08); color: var(--leaf); }
+  .tag-medium { background: rgba(245,166,35,0.12); color: #B8860B; }
+  .tag-advanced { background: rgba(183,216,230,0.4); color: #2C6F8A; }
+
+  /* EXPLAINER GRID */
+  .explainer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .explainer-content p { margin-bottom: 16px; }
+  .benefit-list { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
+  .benefit-list li { display: flex; align-items: start; gap: 14px; font-size: 0.95rem; color: var(--ink-soft); }
+  .benefit-icon { width: 36px; height: 36px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; background: var(--sun-glow); border-radius: 10px; }
+  .flow-diagram { display: flex; flex-direction: column; gap: 0; }
+  .flow-step { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px 24px; display: flex; align-items: center; gap: 16px; }
+  .flow-num { width: 36px; height: 36px; flex-shrink: 0; background: var(--leaf); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
+  .flow-step p { font-size: 0.92rem; color: var(--ink-soft); }
+  .flow-step p strong { color: var(--ink); }
+  .flow-arrow { text-align: center; font-size: 1.2rem; color: var(--leaf-light); padding: 4px 0; }
+
+  /* PARTNERS */
+  .partners-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 56px; }
+  .partners-grid.four-col { grid-template-columns: repeat(4, 1fr); }
+  .partner-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 32px; text-align: center; transition: all 0.3s; position: relative;
+  }
+  .partner-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-4px); }
+  .partner-card.featured { border-color: var(--sun); box-shadow: 0 0 0 1px var(--sun), var(--shadow); }
+  .partner-logo { font-size: 2rem; margin-bottom: 12px; }
+  .partner-name { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--ink); margin-bottom: 8px; }
+  .partner-desc { font-size: 0.88rem; color: var(--ink-soft); margin-bottom: 16px; line-height: 1.6; }
+  .partner-features { list-style: none; text-align: left; margin-bottom: 20px; }
+  .partner-features li { font-size: 0.85rem; color: var(--ink-soft); padding: 5px 0; padding-left: 20px; position: relative; }
+  .partner-features li::before { content: '✓'; position: absolute; left: 0; color: var(--leaf); font-weight: 600; }
+  .partner-btn { display: block; padding: 12px 20px; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: 0.88rem; transition: all 0.3s; }
+  .partner-btn-primary { background: var(--leaf); color: white; }
+  .partner-btn-primary:hover { background: var(--leaf-dark); }
+  .partner-btn-outline { border: 2px solid var(--leaf); color: var(--leaf); background: transparent; }
+  .partner-btn-outline:hover { background: rgba(45,106,79,0.06); }
+
+  /* FAQ */
+  .faq-section { background: var(--sky); }
+  .faq-grid { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+  .faq-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+  .faq-q {
+    padding: 22px 28px; font-weight: 600; font-size: 1rem; color: var(--ink);
+    cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s;
+  }
+  .faq-q:hover { background: rgba(45,106,79,0.03); }
+  .faq-q .arrow { font-size: 0.8rem; color: var(--ink-soft); transition: transform 0.3s; }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; }
+  .faq-a p { padding: 0 28px; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.75; }
+  :global(.faq-item.open) .faq-a { max-height: 300px; padding-bottom: 22px; }
+  :global(.faq-item.open) .faq-q .arrow { transform: rotate(180deg); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hero-visual { order: -1; }
+    .options-grid.four-col { grid-template-columns: 1fr 1fr; }
+    .partners-grid.four-col { grid-template-columns: 1fr 1fr; }
+    .explainer-grid { grid-template-columns: 1fr; gap: 40px; }
+    .trust-row { flex-wrap: wrap; gap: 16px; }
+  }
+  @media (max-width: 600px) {
+    .options-grid.four-col { grid-template-columns: 1fr; }
+    .partners-grid.four-col { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  // FAQ toggle
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement!;
+      document.querySelectorAll('.faq-item').forEach(i => {
+        if (i !== item) i.classList.remove('open');
+      });
+      item.classList.toggle('open');
+    });
+  });
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        (entry.target as HTMLElement).style.opacity = '1';
+        (entry.target as HTMLElement).style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.option-card, .partner-card, .timeline-item, .faq-item').forEach(el => {
+    (el as HTMLElement).style.opacity = '0';
+    (el as HTMLElement).style.transform = 'translateY(24px)';
+    (el as HTMLElement).style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
