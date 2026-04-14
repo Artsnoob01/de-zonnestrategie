@@ -543,6 +543,7 @@
     const selfUse = Math.round(Math.min(production * selfUseRatio, usage));
     const surplus = production - selfUse;
 
+    // === Stap 1a: besparing MET saldering (2026, 64%) — vlak berekend ===
     const salderingPct = 0.64;
     const salderedKwh = Math.round(Math.min(surplus * salderingPct, usage - selfUse));
     const savingSelfUse = selfUse * tariff;
@@ -551,16 +552,34 @@
     const savingFeedin2026 = unsalderedSurplus2026 * feedin;
     const savingWithSaldering = Math.round(savingSelfUse + savingSaldered + savingFeedin2026);
 
-    const savingFeedinAll = surplus * feedin;
-    const savingWithout = Math.round(savingSelfUse + savingFeedinAll);
+    // === Stap 1b: besparing ZONDER saldering — per dagdeel op spotprijzen ===
+    // Overschot per dagdeel (gebaseerd op zonne-productieverdeling)
+    const surplusMorning   = surplus * SOLAR_DIST.morning;    // 30% van overschot
+    const surplusAfternoon = surplus * SOLAR_DIST.afternoon;  // 55% van overschot
+    const surplusEvening   = surplus * SOLAR_DIST.evening;    // 15% van overschot
 
-    const loss = savingWithout - savingWithSaldering;
+    // Terugleververgoeding per dagdeel = spotprijs (wholesale)
+    // Bij vast contract: feedin-slider waarde. Bij spotmarkt: werkelijke dagdeelprijs.
+    // We tonen het verschil: vast contract vs. spotmarkt-realiteit
+    const feedinFlat = surplus * feedin; // Wat je krijgt bij vast contract
+    const feedinSpot = // Wat je overschot waard is op de spotmarkt per dagdeel
+      surplusMorning   * SPOT.morning +
+      surplusAfternoon * SPOT.afternoon +
+      surplusEvening   * SPOT.evening;
 
-    // Dagdeel-insight berekenen
-    const surplusAfternoon = Math.round(surplus * SOLAR_DIST.afternoon);
-    const surplusEvening = Math.round(surplus * SOLAR_DIST.evening);
-    const spreadPerKwh = SPOT.evening - SPOT.afternoon;
-    const batteryPotential = Math.round(surplusAfternoon * spreadPerKwh);
+    const savingWithoutFlat = Math.round(savingSelfUse + feedinFlat);
+    const savingWithoutSpot = Math.round(savingSelfUse + feedinSpot);
+
+    const loss = savingWithoutFlat - savingWithSaldering;
+
+    // Dagdeel-breakdown voor display
+    const surplusAfternoonRound = Math.round(surplusAfternoon);
+    const afternoonRevenue = Math.round(surplusAfternoon * SPOT.afternoon);
+    const eveningValue = Math.round(surplusAfternoon * SPOT.evening);
+    const batteryPotential = eveningValue - afternoonRevenue;
+
+    // Spotmarkt-mismatch: hoeveel je verliest doordat je overdag teruglevert ipv 's avonds
+    const spotMismatch = Math.round(feedinSpot - (surplus * SPOT.evening)); // negatief = je mist geld
 
     $('panels-val').textContent = panels + ' panelen';
     $('usage-val').textContent = fmt(usage) + ' kWh';
@@ -568,44 +587,61 @@
     $('feedin-val').textContent = '€' + feedin.toFixed(2).replace('.', ',') + '/kWh';
 
     $('res-saving-now').textContent = '€ ' + fmt(savingWithSaldering);
-    $('res-saving-after').textContent = '€ ' + fmt(savingWithout);
+    $('res-saving-after').textContent = '€ ' + fmt(savingWithoutFlat);
     $('res-loss').textContent = '– € ' + fmt(Math.abs(loss));
     $('res-production').textContent = fmt(production) + ' kWh';
     $('res-selfuse').textContent = fmt(selfUse) + ' kWh';
     $('res-surplus').textContent = fmt(surplus) + ' kWh';
 
-    // Dagdeel-insight updaten
+    // Dagdeel-insight updaten met echte spotmarkt-berekening
+    const spotRevenue = Math.round(feedinSpot);
     $('daypart-insight').innerHTML =
-      `☀️ Van je ${fmt(surplus)} kWh overschot valt <strong>${fmt(surplusAfternoon)} kWh</strong> in de middaguren (€${SPOT.afternoon.toFixed(2).replace('.',',')}). ` +
-      `Verschuif dat naar de avondpiek (€${SPOT.evening.toFixed(2).replace('.',',')}) en het verschil is <strong>€${fmt(batteryPotential)}/jaar</strong> — ` +
-      `dat is wat een thuisbatterij verdient op de spotmarkt.`;
+      `📊 <strong>Spotmarkt-realiteit:</strong> je ${fmt(surplus)} kWh overschot is op de EPEX-markt ` +
+      `<strong>€${fmt(spotRevenue)}/jaar</strong> waard — waarvan ${fmt(surplusAfternoonRound)} kWh in de goedkoopste uren (middag, €${SPOT.afternoon.toFixed(2).replace('.',',')}). ` +
+      `Verschuif dat naar de avondpiek (€${SPOT.evening.toFixed(2).replace('.',',')}) en je verdient ` +
+      `<strong>€${fmt(batteryPotential)} extra</strong> per jaar.`;
 
     updateDaypartBars();
 
-    state = { panels, usage, tariff, feedin, production, selfUse, surplus, savingWithSaldering, savingWithout, loss };
+    state = {
+      panels, usage, tariff, feedin, production, selfUse, surplus,
+      savingWithSaldering, savingWithout: savingWithoutFlat, loss,
+      surplusMorning, surplusAfternoon, surplusEvening,
+      feedinSpot, spotRevenue
+    };
   }
 
   function calcStep2() {
-    const { surplus, tariff, feedin, savingWithSaldering, savingWithout, loss, selfUse } = state;
+    const { surplus, tariff, feedin, savingWithSaldering, savingWithout, loss, selfUse,
+            surplusMorning, surplusAfternoon, surplusEvening, feedinSpot } = state;
     const dynOn = ($('opt-dynamic') as HTMLInputElement).checked;
     const batOn = ($('opt-battery') as HTMLInputElement).checked;
     const p2pOn = ($('opt-p2p') as HTMLInputElement).checked;
     const ereOn = ($('opt-ere') as HTMLInputElement).checked;
 
-    // Dynamisch: geen terugleverkosten (€0.04 bespaard) + beter timen (~€0.03 extra/kWh)
-    const dynSavePerKwh = 0.04 + 0.03;
-    const dynamicBenefit = dynOn ? Math.round(surplus * dynSavePerKwh) : 0;
+    // === Dynamisch contract ===
+    // Voordeel 1: geen terugleverkosten (vast contract rekent €0,03-0,05/kWh)
+    const dynNoFeedbackCost = 0.04 * surplus;
+    // Voordeel 2: je ontvangt de werkelijke spotprijs per dagdeel ipv vaste feedin
+    // Spotwaarde per dagdeel vs vaste terugleververgoeding
+    const dynSpotGain = feedinSpot - (surplus * feedin); // kan positief of negatief zijn
+    const dynamicBenefit = dynOn ? Math.round(dynNoFeedbackCost + Math.max(0, dynSpotGain)) : 0;
 
-    // Batterij: verschuif 55% van overschot (middag) naar avondpiek
-    // Besparing = verschoven kWh * (retailtarief - middagspot) ipv terugleveren tegen feedin
-    const batteryShiftKwh = batOn ? Math.round(surplus * SOLAR_DIST.afternoon * 0.90) : 0; // 90% efficiëntie
+    // === Thuisbatterij ===
+    // Verschuif middag-overschot (55%, goedkoopste uren) naar eigen avondverbruik
+    // Je bespaart het retail-tarief ipv de terugleververgoeding te ontvangen
+    const batteryEfficiency = 0.90; // 90% round-trip
+    const batteryShiftKwh = batOn ? Math.round(surplusAfternoon * batteryEfficiency) : 0;
+    // Winst = verschoven kWh * (retailtarief dat je uitspaart - feedin die je anders had ontvangen)
     const batteryBenefit = batOn ? Math.round(batteryShiftKwh * (tariff - feedin)) : 0;
 
-    // P2P: restoverschot tegen licht betere prijs dan feedin
-    const remainingSurplus = surplus - batteryShiftKwh;
-    const p2pBenefit = p2pOn ? Math.round(remainingSurplus * 0.04) : 0;
+    // === P2P ===
+    // Restoverschot (ochtend + avond overschot + wat middag overblijft) verkopen
+    // Tegen iets betere prijs dan feedin (~€0,04/kWh premium)
+    const afterBattery = surplus - (batOn ? Math.round(surplusAfternoon) : 0);
+    const p2pBenefit = p2pOn ? Math.round(afterBattery * 0.04) : 0;
 
-    // ERE: ~€0,10/kWh bij thuisladen EV, gemiddeld 3000 kWh/jaar
+    // === ERE-credits ===
     const ereKwh = 3000;
     const ereBenefit = ereOn ? Math.round(ereKwh * 0.10) : 0;
 
