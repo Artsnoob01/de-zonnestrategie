@@ -50,38 +50,66 @@
           </div>
         </div>
         <div class="calc-result">
-          <div class="result-impact">
-            <div class="impact-now">
-              <div class="impact-label">Jouw besparing mét saldering <span class="impact-year">(2026, 64%)</span></div>
-              <div class="impact-number" id="res-saving-now">€ 1.428</div>
-            </div>
-            <div class="impact-divider">
-              <span class="impact-arrow-down">▼</span>
-            </div>
-            <div class="impact-after">
-              <div class="impact-label">Jouw besparing zónder saldering <span class="impact-year">(2027+)</span></div>
-              <div class="impact-number dim" id="res-saving-after">€ 847</div>
-              <div class="impact-sub">alleen zelfverbruik + terugleververgoeding</div>
-            </div>
-          </div>
-          <div class="impact-loss-box">
-            <div class="loss-label">Jij verliest per jaar</div>
-            <div class="loss-number" id="res-loss">– € 581</div>
-            <div class="loss-sub">als je niets verandert aan je situatie</div>
-          </div>
-          <div class="result-breakdown" style="margin-top: 24px;">
+          <!-- Productie-overzicht -->
+          <div class="calc-block">
+            <div class="calc-block-header">Jouw zonnepanelen</div>
             <div class="result-row">
-              <span>Geschatte jaarproductie</span>
+              <span>Jaarproductie (<span id="res-panels-num">12</span> × 350 kWh)</span>
               <span id="res-production">4.200 kWh</span>
             </div>
             <div class="result-row">
               <span>Direct zelfverbruik (~35%)</span>
               <span id="res-selfuse">1.470 kWh</span>
             </div>
-            <div class="result-row">
+            <div class="result-row calc-row-highlight">
               <span>Overschot → net</span>
               <span id="res-surplus">2.730 kWh</span>
             </div>
+          </div>
+
+          <!-- Besparing MET saldering -->
+          <div class="calc-block">
+            <div class="calc-block-header">Besparing mét saldering <span class="calc-block-tag">2026, 64%</span></div>
+            <div class="result-row">
+              <span>Zelfverbruik × tarief (<span id="res-selfuse2">1.470</span> × €<span id="res-tariff2">0,34</span>)</span>
+              <span id="res-saving-selfuse">€ 500</span>
+            </div>
+            <div class="result-row">
+              <span>Gesaldeerd (<span id="res-saldered-kwh">1.747</span> kWh × €<span id="res-tariff3">0,34</span>)</span>
+              <span id="res-saving-saldered">€ 594</span>
+            </div>
+            <div class="result-row">
+              <span>Rest overschot × terugleververgoeding</span>
+              <span id="res-saving-feedin-rest">€ 69</span>
+            </div>
+            <div class="result-row calc-row-total">
+              <span>Totaal besparing met saldering</span>
+              <span class="impact-number-sm" id="res-saving-now">€ 1.163</span>
+            </div>
+          </div>
+
+          <!-- Besparing ZONDER saldering -->
+          <div class="calc-block">
+            <div class="calc-block-header">Besparing zónder saldering <span class="calc-block-tag warning">2027+</span></div>
+            <div class="result-row">
+              <span>Zelfverbruik × tarief (ongewijzigd)</span>
+              <span id="res-saving-selfuse-after">€ 500</span>
+            </div>
+            <div class="result-row">
+              <span>Overschot × terugleververgoeding (<span id="res-surplus3">2.730</span> × €<span id="res-feedin2">0,07</span>)</span>
+              <span id="res-saving-feedin-after">€ 191</span>
+            </div>
+            <div class="result-row calc-row-total">
+              <span>Totaal besparing zonder saldering</span>
+              <span class="impact-number-sm dim" id="res-saving-after">€ 691</span>
+            </div>
+          </div>
+
+          <!-- Verlies -->
+          <div class="impact-loss-box">
+            <div class="loss-label">Jij verliest per jaar</div>
+            <div class="loss-number" id="res-loss">– € 472</div>
+            <div class="loss-sub">als je niets verandert aan je situatie</div>
           </div>
 
           <!-- Dagdeel-verdeling overschot -->
@@ -189,24 +217,72 @@
           <div class="result-comparison">
             <div class="comparison-row loss-row">
               <span>Verlies door einde saldering</span>
-              <span class="comp-neg" id="res2-loss">– € 581</span>
+              <span class="comp-neg" id="res2-loss">– € 472</span>
             </div>
             <div class="comparison-divider"></div>
-            <div class="comparison-row" id="row-dynamic">
-              <span>Winst dynamisch contract</span>
-              <span class="comp-pos" id="res2-dynamic">+ € 218</span>
+
+            <!-- Dynamisch contract detail -->
+            <div id="row-dynamic">
+              <div class="comparison-row">
+                <span>Winst dynamisch contract</span>
+                <span class="comp-pos" id="res2-dynamic">+ € 191</span>
+              </div>
+              <div class="detail-rows" id="detail-dynamic">
+                <div class="detail-row">
+                  <span>Geen terugleverkosten (€0,04 × <span id="res2-dyn-kwh">2.730</span> kWh)</span>
+                  <span id="res2-dyn-feedbacksave">€ 109</span>
+                </div>
+                <div class="detail-row">
+                  <span>Spotprijs vs. vaste vergoeding</span>
+                  <span id="res2-dyn-spotgain">€ 82</span>
+                </div>
+              </div>
             </div>
-            <div class="comparison-row" id="row-battery">
-              <span>Winst thuisbatterij</span>
-              <span class="comp-pos" id="res2-battery">+ € 497</span>
+
+            <!-- Thuisbatterij detail -->
+            <div id="row-battery">
+              <div class="comparison-row">
+                <span>Winst thuisbatterij</span>
+                <span class="comp-pos" id="res2-battery">+ € 365</span>
+              </div>
+              <div class="detail-rows" id="detail-battery">
+                <div class="detail-row">
+                  <span>Middag → avond verschoven (<span id="res2-bat-kwh">1.352</span> kWh × 90%)</span>
+                  <span id="res2-bat-shift">1.217 kWh</span>
+                </div>
+                <div class="detail-row">
+                  <span>Bespaard tarief (€<span id="res2-bat-tariff">0,34</span>) i.p.v. feedin (€<span id="res2-bat-feedin">0,07</span>)</span>
+                  <span id="res2-bat-perkwh">€0,27/kWh</span>
+                </div>
+              </div>
             </div>
-            <div class="comparison-row" id="row-p2p" style="display:none;">
-              <span>Winst peer-to-peer</span>
-              <span class="comp-pos" id="res2-p2p">+ € 135</span>
+
+            <!-- P2P detail -->
+            <div id="row-p2p" style="display:none;">
+              <div class="comparison-row">
+                <span>Winst peer-to-peer</span>
+                <span class="comp-pos" id="res2-p2p">+ € 55</span>
+              </div>
+              <div class="detail-rows" id="detail-p2p">
+                <div class="detail-row">
+                  <span>Restoverschot (<span id="res2-p2p-kwh">1.378</span> kWh × €0,04 premium)</span>
+                  <span></span>
+                </div>
+              </div>
             </div>
-            <div class="comparison-row" id="row-ere">
-              <span>Opbrengst ERE-credits (EV laden)</span>
-              <span class="comp-pos" id="res2-ere">+ € 300</span>
+
+            <!-- ERE detail -->
+            <div id="row-ere">
+              <div class="comparison-row">
+                <span>Opbrengst ERE-credits (EV laden)</span>
+                <span class="comp-pos" id="res2-ere">+ € 300</span>
+              </div>
+              <div class="detail-rows" id="detail-ere">
+                <div class="detail-row">
+                  <span>3.000 kWh thuisladen × €0,10/kWh (RED3-richtlijn)</span>
+                  <span></span>
+                </div>
+              </div>
             </div>
           </div>
           <div class="net-result-box positive" id="net-result-box">
@@ -439,6 +515,74 @@
   .result-row span:first-child { color: rgba(255,255,255,0.7); }
   .result-row span:last-child { color: white; font-weight: 600; }
 
+  /* Calculation blocks */
+  .calc-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius-sm);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+  .calc-block-header {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .calc-block-tag {
+    font-size: 0.68rem;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: rgba(105,219,124,0.15);
+    color: #69DB7C;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .calc-block-tag.warning {
+    background: rgba(255,107,107,0.15);
+    color: #FF6B6B;
+  }
+  .calc-row-highlight span:last-child {
+    color: var(--sun-light);
+    font-weight: 700;
+  }
+  .calc-row-total {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 6px;
+    padding-top: 10px;
+  }
+  .impact-number-sm {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    color: var(--sun);
+  }
+  .impact-number-sm.dim { color: rgba(255,255,255,0.45); }
+
+  /* Detail rows for step 2 */
+  .detail-rows {
+    padding: 8px 0 12px 16px;
+    border-left: 2px solid rgba(255,255,255,0.08);
+    margin-left: 8px;
+    margin-bottom: 8px;
+  }
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.45);
+    padding: 4px 0;
+  }
+  .detail-row span:last-child {
+    color: rgba(255,255,255,0.55);
+    font-weight: 500;
+  }
+
   /* Daypart breakdown */
   .daypart-breakdown {
     background: rgba(255,255,255,0.04);
@@ -630,17 +774,42 @@
     // Spotmarkt-mismatch: hoeveel je verliest doordat je overdag teruglevert ipv 's avonds
     const spotMismatch = Math.round(feedinSpot - (surplus * SPOT.evening)); // negatief = je mist geld
 
+    // Tussenstappen berekenen
+    const savingSelfUseVal = Math.round(savingSelfUse);
+    const savingSalderedVal = Math.round(savingSaldered);
+    const savingFeedinRestVal = Math.round(savingFeedin2026);
+    const savingFeedinAfterVal = Math.round(feedinFlat);
+
     $('panels-val').textContent = panels + ' panelen';
     $('usage-val').textContent = fmt(usage) + ' kWh';
     $('tariff-val').textContent = '€' + tariff.toFixed(2).replace('.', ',') + '/kWh';
     $('feedin-val').textContent = '€' + feedin.toFixed(2).replace('.', ',') + '/kWh';
 
-    $('res-saving-now').textContent = '€ ' + fmt(savingWithSaldering);
-    $('res-saving-after').textContent = '€ ' + fmt(savingWithoutFlat);
-    $('res-loss').textContent = '– € ' + fmt(Math.abs(loss));
+    // Productie-blok
+    $('res-panels-num').textContent = String(panels);
     $('res-production').textContent = fmt(production) + ' kWh';
     $('res-selfuse').textContent = fmt(selfUse) + ' kWh';
     $('res-surplus').textContent = fmt(surplus) + ' kWh';
+
+    // Besparing MET saldering blok
+    $('res-selfuse2').textContent = fmt(selfUse);
+    $('res-tariff2').textContent = tariff.toFixed(2).replace('.', ',');
+    $('res-saving-selfuse').textContent = '€ ' + fmt(savingSelfUseVal);
+    $('res-saldered-kwh').textContent = fmt(salderedKwh);
+    $('res-tariff3').textContent = tariff.toFixed(2).replace('.', ',');
+    $('res-saving-saldered').textContent = '€ ' + fmt(savingSalderedVal);
+    $('res-saving-feedin-rest').textContent = '€ ' + fmt(savingFeedinRestVal);
+    $('res-saving-now').textContent = '€ ' + fmt(savingWithSaldering);
+
+    // Besparing ZONDER saldering blok
+    $('res-saving-selfuse-after').textContent = '€ ' + fmt(savingSelfUseVal);
+    $('res-surplus3').textContent = fmt(surplus);
+    $('res-feedin2').textContent = feedin.toFixed(2).replace('.', ',');
+    $('res-saving-feedin-after').textContent = '€ ' + fmt(savingFeedinAfterVal);
+    $('res-saving-after').textContent = '€ ' + fmt(savingWithoutFlat);
+
+    // Verlies
+    $('res-loss').textContent = '– € ' + fmt(Math.abs(loss));
 
     // Dagdeel-breakdown updaten
     $('res-surplus-morning-kwh').textContent = fmt(Math.round(surplusMorning));
@@ -716,10 +885,27 @@
     $('res2-p2p').textContent = '+ € ' + fmt(p2pBenefit);
     $('res2-ere').textContent = '+ € ' + fmt(ereBenefit);
 
-    $('row-dynamic').style.display = dynOn ? 'flex' : 'none';
-    $('row-battery').style.display = batOn ? 'flex' : 'none';
-    $('row-p2p').style.display = p2pOn ? 'flex' : 'none';
-    $('row-ere').style.display = ereOn ? 'flex' : 'none';
+    // Detail-velden dynamisch contract
+    $('res2-dyn-kwh').textContent = fmt(surplus);
+    $('res2-dyn-feedbacksave').textContent = '€ ' + fmt(Math.round(dynNoFeedbackCost));
+    $('res2-dyn-spotgain').textContent = '€ ' + fmt(Math.round(Math.max(0, dynSpotGain)));
+
+    // Detail-velden thuisbatterij
+    const batShiftRaw = Math.round(surplusAfternoon);
+    const batShiftEff = batteryShiftKwh;
+    $('res2-bat-kwh').textContent = fmt(batShiftRaw);
+    $('res2-bat-shift').textContent = fmt(batShiftEff) + ' kWh';
+    $('res2-bat-tariff').textContent = tariff.toFixed(2).replace('.', ',');
+    $('res2-bat-feedin').textContent = feedin.toFixed(2).replace('.', ',');
+    $('res2-bat-perkwh').textContent = '€' + (tariff - feedin).toFixed(2).replace('.', ',') + '/kWh';
+
+    // Detail-velden P2P
+    $('res2-p2p-kwh').textContent = fmt(afterBattery);
+
+    $('row-dynamic').style.display = dynOn ? 'block' : 'none';
+    $('row-battery').style.display = batOn ? 'block' : 'none';
+    $('row-p2p').style.display = p2pOn ? 'block' : 'none';
+    $('row-ere').style.display = ereOn ? 'block' : 'none';
 
     const box = $('net-result-box');
     if (net >= 0) {
