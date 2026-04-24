@@ -5,6 +5,22 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# ───── Custom domain redirect: force canonical host ─────
+# Netlify-subdomein → eigen domein (SEO: voorkomt duplicate content)
+[[redirects]]
+  from = "https://mellow-basbousa-71f670.netlify.app/*"
+  to = "https://dezonnestrategie.nl/:splat"
+  status = 301
+  force = true
+
+# www → non-www (canonical: dezonnestrategie.nl zonder www)
+[[redirects]]
+  from = "https://www.dezonnestrategie.nl/*"
+  to = "https://dezonnestrategie.nl/:splat"
+  status = 301
+  force = true
+
+# ───── Legacy redirects voor oude branding ─────
 [[redirects]]
   from = "/slimterugleveren"
   to = "/"
@@ -14,3 +30,12 @@
   from = "/slimterugleveren.html"
   to = "/"
   status = 301
+
+# ───── Security headers ─────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
