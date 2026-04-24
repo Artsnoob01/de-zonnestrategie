@@ -11,29 +11,116 @@ const { isLanding = false } = Astro.props;
       <div class="sun-icon"></div>
       De Zonnestrategie
     </a>
-    <div class="nav-links">
-      {isLanding ? (
-        <>
-          <a href="#wat-verandert">Wat verandert er?</a>
-          <a href="#opties">Jouw opties</a>
-          <a href="#ere">ERE-credits</a>
-          <a href="#rekentool">Rekentool</a>
-          <a href="#faq">FAQ</a>
-        </>
-      ) : (
-        <>
-          <a href="/">Home</a>
-          <a href="/#rekentool">Rekentool</a>
-        </>
-      )}
+
+    <button id="nav-toggle" class="nav-toggle" aria-label="Menu openen" aria-expanded="false">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+
+    <div class="nav-links" id="nav-links">
+      <a href="/kennisbank/" class="nav-primary">Kennisbank</a>
       <a href="/blog/">Blog</a>
-      <a href={isLanding ? "#rekentool" : "/#rekentool"} class="nav-cta">Bereken je situatie →</a>
+      {isLanding ? (
+        <a href="#rekentool">Rekentool</a>
+      ) : (
+        <a href="/#rekentool">Rekentool</a>
+      )}
+      <a href="/over">Over</a>
+      <a href="/kennisbank/" class="nav-cta">Ontdek de Energiewet →</a>
     </div>
   </div>
 </nav>
 
+<style>
+  .nav-primary {
+    color: var(--leaf-dark) !important;
+    font-weight: 600 !important;
+  }
+
+  /* Mobile hamburger */
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .nav-toggle-bar {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  @media (max-width: 900px) {
+    .nav-toggle { display: flex; }
+    .nav-links {
+      display: none !important;
+      position: fixed;
+      top: 68px;
+      left: 0;
+      right: 0;
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--border);
+      flex-direction: column !important;
+      gap: 0 !important;
+      padding: 12px 24px 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      max-height: calc(100vh - 68px);
+      overflow-y: auto;
+    }
+    .nav-links.open {
+      display: flex !important;
+    }
+    .nav-links a {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 1rem !important;
+    }
+    .nav-links a:last-child {
+      border-bottom: none;
+      margin-top: 12px;
+    }
+    .nav-cta {
+      text-align: center;
+    }
+  }
+</style>
+
 <script>
+  // Scroll effect
   window.addEventListener('scroll', () => {
     document.getElementById('nav')?.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Mobile hamburger toggle
+  const toggle = document.getElementById('nav-toggle');
+  const links = document.getElementById('nav-links');
+  toggle?.addEventListener('click', () => {
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    links?.classList.toggle('open');
+  });
+
+  // Close menu on link click
+  links?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      links.classList.remove('open');
+      toggle?.setAttribute('aria-expanded', 'false');
+    });
   });
 </script>

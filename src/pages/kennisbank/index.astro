@@ -1,45 +1,154 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Haal bestaande kennisbank-artikelen op
+const kbArticles = await getCollection('kennisbank');
+const publishedSlugs = new Set(kbArticles.map(a => a.slug));
+
+// Definieer de volledige kennisbank-structuur
+const clusters = [
+  {
+    id: 'basis',
+    icon: '📖',
+    title: 'De basis — wat is er veranderd?',
+    description: 'De Energiewet vervangt de Elektriciteitswet 1998. Nieuwe termen, nieuwe rollen, nieuwe rechten. Hier begrijp je het raamwerk.',
+    articles: [
+      { slug: 'energietermen-uitgelegd', title: 'Nieuwe energietermen uitgelegd', desc: 'Van netbeheerder naar systeembeheerder: alle nieuwe begrippen in gewoon Nederlands.' },
+      { slug: 'consumentenrechten-energiewet', title: 'Je nieuwe rechten als energieconsument', desc: 'Opzegboetes, contracttransparantie, faillissementsbescherming — wat je nu kunt verwachten.' },
+      { slug: 'slimme-meter-verplicht', title: 'De slimme meter wordt verplicht', desc: 'Waarom hij essentieel is voor energiedelen en dynamische contracten, en wat als je hem nog niet hebt.' },
+    ]
+  },
+  {
+    id: 'energiedelen',
+    icon: '🔄',
+    title: 'Energiedelen — de kern van de wet',
+    description: 'Jij bent nu "actieve afnemer". Je mag stroom delen, verkopen aan je buurman, of een energiegemeenschap oprichten. Wat kan er nu echt?',
+    articles: [
+      { slug: 'energiedelen-uitgelegd', title: 'Energiedelen uitgelegd', desc: 'Stroom delen met buren, familie of je VvE — hoe werkt de administratieve toerekening en wat zijn de voorwaarden?' },
+      { slug: 'energiegemeenschap-oprichten', title: 'Een energiegemeenschap oprichten', desc: 'Stap voor stap: coöperatievorm, NEN-certificering, netbeheerder-aanmelding, verdeelsleutel.' },
+      { slug: 'peer-to-peer-stroom-verkopen', title: 'Peer-to-peer stroom verkopen', desc: 'Wettelijk mag het zonder vergunning. Praktisch staat de markt nog in de kinderschoenen. Wat is realistisch?' },
+      { slug: 'energiedelen-vs-p2p-vs-terugleveren', title: 'Energiedelen vs. P2P vs. terugleveren', desc: 'Drie concepten, drie situaties, drie uitkomsten. Opheldering over wijdverspreide begripsverwarring.' },
+    ]
+  },
+  {
+    id: 'groepen',
+    icon: '👥',
+    title: 'Voor wie geldt wat?',
+    description: 'Niet iedereen zit in dezelfde situatie. De Energiewet werkt anders voor VvE-bewoners, huurders en ZZP\'ers dan voor huiseigenaren.',
+    articles: [
+      { slug: 'vve-zonnepanelen-energiewet', title: 'Zonnepanelen en je VvE', desc: 'Energiegemeenschap binnen een VvE, splitsingsakte, opbrengstverdeling onder de nieuwe wet.' },
+      { slug: 'huurder-zonnepanelen', title: 'Huurder met zonnepanelen', desc: 'Profiteren van zonne-energie op het dak van je complex zonder eigen panelen.' },
+      { slug: 'zzp-energiewet', title: 'ZZP\'er en de Energiewet', desc: 'Micro-onderneming of huishouden? Het grijze gebied rondom thuiskantoor en zakelijk contract.' },
+    ]
+  },
+  {
+    id: 'toekomst',
+    icon: '🔮',
+    title: 'Toekomst & flexibiliteit',
+    description: 'De Energiewet is nog niet af. AMvB en EMD-pakket moeten nog door het parlement. Ondertussen komen nieuwe verdienmodellen in beeld.',
+    articles: [
+      { slug: 'flexibiliteit-aggregatie', title: 'Flexibiliteit verkopen met je thuisbatterij', desc: 'Hoe werkt aggregatie? Vraagrespons, welke batterijen ondersteunen dit, en wat levert het op?' },
+      { slug: 'netcongestie-uitgelegd', title: 'Netcongestie uitgelegd', desc: 'Waarom het stroomnet vol zit en wat jij eraan kunt doen. De achtergrond van de hele Energiewet.' },
+      { slug: 'amvb-emd-pakket-toekomst', title: 'Wat komt er nog?', desc: 'AMvB, EMD-pakket, toekomst van energiedelen. Wat nog niet af is en wat nog door het parlement moet.' },
+    ]
+  },
+];
+
+const totalArticles = clusters.reduce((sum, c) => sum + c.articles.length, 0);
+const publishedCount = clusters.reduce((sum, c) => sum + c.articles.filter(a => publishedSlugs.has(a.slug)).length, 0);
+
+const schemaMarkup = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "De Energiewet-kennisbank",
+  "description": "Onafhankelijke uitleg van de Energiewet 2026: energiedelen, P2P, actieve afnemer en jouw rechten als consument.",
+  "url": "https://dezonnestrategie.nl/kennisbank/",
+});
 ---
 
 <BaseLayout
-  title="Kennisbank | De Zonnestrategie"
-  description="De Energiewet 2026 uitgelegd: alle begrippen, rechten en mogelijkheden voor zonnepanelenbezitters."
+  title="Energiewet-kennisbank | De Zonnestrategie"
+  description="De Energiewet 2026 uitgelegd: alle begrippen, rechten en mogelijkheden. Van energiedelen tot peer-to-peer, van VvE tot ZZP'er."
+  schemaMarkup={schemaMarkup}
 >
 
-<section class="kennisbank-overview">
+<section class="kb-hero">
   <div class="container">
     <div class="kb-header">
       <span class="label">Kennisbank</span>
-      <h1>De Energiewet-kennisbank</h1>
-      <p>Alles wat je moet weten over de Energiewet 2026, energiedelen, peer-to-peer handel en jouw rechten als actieve afnemer. Deze kennisbank wordt vanaf week 7 stap voor stap uitgebouwd.</p>
-    </div>
+      <h1>De <em>Energiewet</em> in begrijpelijke taal</h1>
+      <p class="kb-intro">De Energiewet 2026 is de grootste hervorming van de energiemarkt in 25 jaar. Deze kennisbank legt uit wat de wet betekent, welke rechten jij hebt, en welke nieuwe mogelijkheden er zijn — juridisch onderbouwd, onafhankelijk, en voor iedereen begrijpelijk.</p>
 
-    <div class="kb-clusters">
-      <div class="cluster-card">
-        <h3>De basis</h3>
-        <p>Nieuwe energietermen, je rechten als consument, en de slimme meter.</p>
-        <span class="cluster-status">Binnenkort beschikbaar</span>
-      </div>
-      <div class="cluster-card">
-        <h3>Energiedelen</h3>
-        <p>Stroom delen met buren, een energiegemeenschap oprichten, peer-to-peer verkoop.</p>
-        <span class="cluster-status">Binnenkort beschikbaar</span>
-      </div>
-      <div class="cluster-card">
-        <h3>Specifieke groepen</h3>
-        <p>VvE's, huurders en ZZP'ers: wat verandert er voor jou?</p>
-        <span class="cluster-status">Binnenkort beschikbaar</span>
-      </div>
-      <div class="cluster-card">
-        <h3>Toekomst & flexibiliteit</h3>
-        <p>Aggregatie, netcongestie, en wat er nog komt (AMvB, EMD-pakket).</p>
-        <span class="cluster-status">Binnenkort beschikbaar</span>
+      <div class="kb-progress">
+        <div class="kb-progress-stat">
+          <span class="kb-progress-num">{totalArticles}</span>
+          <span class="kb-progress-label">artikelen gepland</span>
+        </div>
+        <div class="kb-progress-stat">
+          <span class="kb-progress-num">{publishedCount}</span>
+          <span class="kb-progress-label">beschikbaar</span>
+        </div>
+        <div class="kb-progress-stat">
+          <span class="kb-progress-num">1×</span>
+          <span class="kb-progress-label">per week nieuw</span>
+        </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <div class="kb-cta">
-      <p>In de tussentijd kun je onze <a href="/blog/">blogartikelen</a> lezen over de salderingsregeling, thuisbatterijen en dynamische contracten.</p>
+<section class="kb-clusters-section">
+  <div class="container">
+    {clusters.map((cluster, idx) => (
+      <div class="cluster" id={cluster.id}>
+        <div class="cluster-header">
+          <div class="cluster-number">{String(idx + 1).padStart(2, '0')}</div>
+          <div>
+            <div class="cluster-icon">{cluster.icon}</div>
+            <h2>{cluster.title}</h2>
+            <p>{cluster.description}</p>
+          </div>
+        </div>
+
+        <div class="cluster-articles">
+          {cluster.articles.map(article => {
+            const isPublished = publishedSlugs.has(article.slug);
+            const href = `/kennisbank/${article.slug}`;
+            return isPublished ? (
+              <a href={href} class="kb-article kb-article-published">
+                <div class="kb-article-status">
+                  <span class="kb-dot kb-dot-published"></span>
+                  Beschikbaar
+                </div>
+                <h3>{article.title}</h3>
+                <p>{article.desc}</p>
+                <span class="kb-article-cta">Lees artikel →</span>
+              </a>
+            ) : (
+              <div class="kb-article kb-article-pending">
+                <div class="kb-article-status">
+                  <span class="kb-dot kb-dot-pending"></span>
+                  Binnenkort
+                </div>
+                <h3>{article.title}</h3>
+                <p>{article.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<section class="kb-footer-cta">
+  <div class="container">
+    <h2>Niet gevonden wat je zocht?</h2>
+    <p>Deze kennisbank groeit elke week. Heb je een concrete zonnepaneel-situatie? Bereken direct wat de Energiewet voor jou betekent.</p>
+    <div class="kb-footer-buttons">
+      <a href="/#rekentool" class="btn-primary">Naar de rekentool →</a>
+      <a href="/blog/" class="btn-secondary">Bekijk blogartikelen</a>
     </div>
   </div>
 </section>
@@ -47,43 +156,204 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-  .kennisbank-overview {
+  .kb-hero {
     padding-top: 140px;
-    padding-bottom: 80px;
+    padding-bottom: 64px;
+    background: linear-gradient(180deg, var(--warm-white) 0%, var(--sky) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .kb-hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(245,166,35,0.10) 0%, transparent 65%);
+    pointer-events: none;
   }
   .kb-header {
     text-align: center;
-    max-width: 680px;
-    margin: 0 auto 64px;
+    max-width: 780px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
   }
-  .kb-header p { margin-top: 12px; font-size: 1.1rem; }
-  .kb-clusters {
+  .kb-header h1 em {
+    font-style: italic;
+    color: var(--leaf);
+  }
+  .kb-intro {
+    margin-top: 20px;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+  .kb-progress {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+  .kb-progress-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .kb-progress-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem;
+    color: var(--leaf-dark);
+    line-height: 1;
+  }
+  .kb-progress-label {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+
+  .kb-clusters-section {
+    padding: 80px 0;
+  }
+  .cluster {
+    margin-bottom: 80px;
+  }
+  .cluster:last-child { margin-bottom: 0; }
+  .cluster-header {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: auto 1fr;
     gap: 24px;
-    margin-bottom: 48px;
+    align-items: start;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid var(--border);
   }
-  .cluster-card {
+  .cluster-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3.5rem;
+    color: var(--sun-light);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .cluster-icon {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+  .cluster-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+  }
+  .cluster-header p {
+    font-size: 1rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    max-width: 720px;
+  }
+
+  .cluster-articles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .kb-article {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 32px;
+    padding: 24px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.3s;
   }
-  .cluster-card h3 { margin-bottom: 10px; }
-  .cluster-card p { font-size: 0.95rem; margin-bottom: 16px; }
-  .cluster-status {
-    display: inline-block;
-    font-size: 0.78rem;
+  .kb-article-published:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-3px);
+    border-color: var(--leaf-light);
+  }
+  .kb-article-pending {
+    opacity: 0.55;
+    background: transparent;
+    border-style: dashed;
+  }
+  .kb-article-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     font-weight: 600;
-    color: var(--sun);
-    background: var(--sun-glow);
-    padding: 4px 12px;
-    border-radius: 100px;
-  }
-  .kb-cta {
-    text-align: center;
-    font-size: 1.05rem;
     color: var(--ink-soft);
   }
-  .kb-cta a { color: var(--leaf); font-weight: 600; }
+  .kb-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .kb-dot-published {
+    background: var(--leaf);
+    box-shadow: 0 0 0 3px rgba(45,106,79,0.15);
+  }
+  .kb-dot-pending {
+    background: transparent;
+    border: 1.5px solid var(--ink-soft);
+  }
+  .kb-article h3 {
+    font-size: 1.1rem;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.3;
+  }
+  .kb-article p {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 0;
+  }
+  .kb-article-cta {
+    margin-top: auto;
+    padding-top: 6px;
+    color: var(--leaf);
+    font-weight: 600;
+    font-size: 0.88rem;
+  }
+
+  .kb-footer-cta {
+    background: var(--leaf-dark);
+    color: white;
+    text-align: center;
+    padding: 80px 24px;
+  }
+  .kb-footer-cta h2 { color: white; margin-bottom: 16px; }
+  .kb-footer-cta p {
+    color: rgba(255,255,255,0.75);
+    max-width: 560px;
+    margin: 0 auto 32px;
+    font-size: 1.05rem;
+  }
+  .kb-footer-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .kb-footer-cta .btn-secondary {
+    color: var(--sun-light);
+    border-color: var(--sun-light);
+  }
+  .kb-footer-cta .btn-secondary:hover {
+    background: rgba(255,216,138,0.08);
+  }
+
+  @media (max-width: 700px) {
+    .kb-progress { gap: 24px; }
+    .kb-progress-num { font-size: 1.6rem; }
+    .cluster-header { grid-template-columns: 1fr; gap: 8px; }
+    .cluster-number { font-size: 2.4rem; }
+    .cluster-articles { grid-template-columns: 1fr; }
+  }
 </style>

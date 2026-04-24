@@ -8,7 +8,13 @@ const schemaMarkup = JSON.stringify([
     "@type": "WebSite",
     "name": "De Zonnestrategie",
     "url": "https://dezonnestrategie.nl",
-    "description": "Onafhankelijk advies over zonnepanelen, de Energiewet en slim omgaan met energie."
+    "description": "Onafhankelijke uitleg van de Energiewet 2026: wat de nieuwe wet voor Nederlandse consumenten betekent, van energiedelen tot peer-to-peer handel.",
+    "inLanguage": "nl-NL",
+    "publisher": {
+      "@type": "Organization",
+      "name": "De Zonnestrategie",
+      "url": "https://dezonnestrategie.nl"
+    }
   },
   {
     "@context": "https://schema.org",
@@ -50,8 +56,8 @@ const schemaMarkup = JSON.stringify([
 ---
 
 <BaseLayout
-  title="De Zonnestrategie — Zonnepanelen blijven slim, ook na 2027"
-  description="Onafhankelijk advies over zonnepanelen en de Energiewet 2026. Bereken wat het einde van saldering voor jou betekent."
+  title="De Zonnestrategie — De Energiewet 2026 uitgelegd voor consumenten"
+  description="Van passieve afnemer naar actieve marktdeelnemer. Onafhankelijke uitleg van de Energiewet 2026 en wat de nieuwe rechten voor jou betekenen."
   schemaMarkup={schemaMarkup}
   isLanding={true}
 >
@@ -61,48 +67,86 @@ const schemaMarkup = JSON.stringify([
   <div class="container">
     <div class="hero-grid">
       <div class="hero-content">
-        <span class="label">Nieuwe Energiewet 2026</span>
-        <h1>Zonnepanelen blijven slim. <em>Hier is waarom.</em></h1>
-        <p class="hero-sub">De salderingsregeling stopt in 2027. Maar met de nieuwe Energiewet, thuisbatterijen en slimme strategieën blijven zonnepanelen een uitstekende investering. Onafhankelijk advies — ook als het antwoord "doe niets" is.</p>
+        <span class="label">Energiewet 2026 · Uitgelegd</span>
+        <h1>Van passieve afnemer naar <em>actieve marktdeelnemer</em></h1>
+        <p class="hero-sub">De Energiewet geeft jou vanaf 2026 nieuwe rechten en mogelijkheden. Energiedelen, peer-to-peer verkoop, het einde van saldering, ERE-credits — hier vind je wat je nu al kunt, wat nog komt, en wat het voor jouw situatie betekent. Juridisch onderbouwd, onafhankelijk, zonder affiliate-belang.</p>
         <div class="hero-buttons">
-          <a href="#rekentool" class="btn-primary">Bereken je situatie →</a>
-          <a href="#opties" class="btn-secondary">Bekijk je opties</a>
+          <a href="/kennisbank/" class="btn-primary">Ontdek de Energiewet →</a>
+          <a href="#rekentool" class="btn-secondary">Bereken je situatie</a>
         </div>
         <div class="trust-row">
           <div class="trust-item">
             <div class="trust-check">✓</div>
-            Onafhankelijk advies
+            Juridisch onderbouwd
           </div>
           <div class="trust-item">
             <div class="trust-check">✓</div>
-            Gebaseerd op de Energiewet
+            Onafhankelijk, geen affiliate
           </div>
           <div class="trust-item">
             <div class="trust-check">✓</div>
-            Geen verborgen kosten
+            Gebaseerd op parlementaire tekst
           </div>
         </div>
       </div>
       <div class="hero-visual">
         <div class="hero-card-stack">
           <div class="hero-stat" style="position:relative;">
-            <div class="hero-badge">Nieuw</div>
-            <div class="stat-label">Saldering in 2026</div>
-            <div class="stat-value">64% <span class="stat-change">↓ was 100%</span></div>
-            <div class="stat-detail">Elk jaar minder terug — in 2027 stopt het helemaal</div>
+            <div class="hero-badge">Sinds 2026</div>
+            <div class="stat-label">Actieve afnemer</div>
+            <div class="stat-value">3 nieuwe rollen</div>
+            <div class="stat-detail">Leveren · Delen · Peer-to-peer</div>
           </div>
           <div class="hero-stat">
-            <div class="stat-label">Dynamisch contract + thuisbatterij</div>
-            <div class="stat-value" style="color: var(--sun);">Tot €900/jr</div>
-            <div class="stat-detail">Extra besparing bovenop je huidige situatie</div>
+            <div class="stat-label">Einde saldering</div>
+            <div class="stat-value" style="color: var(--sun);">1 jan 2027</div>
+            <div class="stat-detail">Zonder afbouw, in één keer</div>
           </div>
           <div class="hero-stat">
-            <div class="stat-label">Actieve afnemer via Energiewet</div>
-            <div class="stat-value">3 nieuwe opties</div>
-            <div class="stat-detail">Leveren · Delen · Peer-to-peer verkoop</div>
+            <div class="stat-label">Terugleververgoeding minimum</div>
+            <div class="stat-value">50%</div>
+            <div class="stat-detail">Van kale leveringstarief, tot 2030 wettelijk geborgd</div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ TWO-PATH SPLIT ═══════════════════════ -->
+<section class="paths-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="label">Waar wil je beginnen?</span>
+      <h2>Twee wegen, één doel: begrijpen wat de Energiewet voor jou betekent</h2>
+    </div>
+    <div class="paths-grid">
+      <a href="/kennisbank/" class="path-card path-kennisbank">
+        <div class="path-icon">📚</div>
+        <span class="path-tag">Kennisbank</span>
+        <h3>Ik wil de Energiewet begrijpen</h3>
+        <p>Systematische uitleg van de nieuwe wet: wat is er veranderd, welke rechten heb je, wat mag er wél en wat nog niet. Voor iedereen die verder wil kijken dan de krantenkoppen.</p>
+        <ul class="path-topics">
+          <li>Nieuwe energietermen in gewoon Nederlands</li>
+          <li>Energiedelen, P2P en actieve afnemers</li>
+          <li>VvE, huurder, ZZP'er — wat geldt voor wie?</li>
+          <li>Wat nog komt: AMvB, EMD-pakket</li>
+        </ul>
+        <span class="path-cta">Naar de kennisbank →</span>
+      </a>
+      <a href="#rekentool" class="path-card path-strategy">
+        <div class="path-icon">☀️</div>
+        <span class="path-tag">Jouw situatie</span>
+        <h3>Ik heb zonnepanelen en wil slim kiezen</h3>
+        <p>Bereken met onze rekentool wat het einde van saldering voor jou betekent. Gebaseerd op echte EPEX-spotprijzen van 2025. Mét eerlijk advies — ook als dat "niets doen" is.</p>
+        <ul class="path-topics">
+          <li>Hoeveel kost einde saldering jou concreet?</li>
+          <li>Dynamisch contract, thuisbatterij, ERE-credits</li>
+          <li>Spotprijzen per dagdeel (EPEX 2025)</li>
+          <li>Blog: dynamisch contract, batterij, ERE</li>
+        </ul>
+        <span class="path-cta">Naar de rekentool →</span>
+      </a>
     </div>
   </div>
 </section>
@@ -373,6 +417,112 @@ const schemaMarkup = JSON.stringify([
   /* ═══════════════════════ LANDING PAGE STYLES ═══════════════════════ */
   .section-header { text-align: center; max-width: 680px; margin: 0 auto 64px; }
   .section-header p { margin-top: 12px; font-size: 1.1rem; }
+
+  /* TWO-PATH SPLIT */
+  .paths-section {
+    background: linear-gradient(180deg, var(--warm-white) 0%, var(--sky) 100%);
+    padding: 80px 0;
+  }
+  .paths-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 40px;
+  }
+  .path-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .path-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--leaf);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+    transform-origin: left;
+  }
+  .path-kennisbank::before { background: var(--leaf); }
+  .path-strategy::before { background: var(--sun); }
+  .path-card:hover::before { transform: scaleX(1); }
+  .path-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-4px);
+  }
+  .path-icon {
+    font-size: 2.4rem;
+    line-height: 1;
+  }
+  .path-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--leaf-light);
+    background: rgba(45,106,79,0.08);
+    padding: 4px 12px;
+    border-radius: 100px;
+    align-self: flex-start;
+    margin-bottom: 4px;
+  }
+  .path-strategy .path-tag { color: #B8860B; background: rgba(245,166,35,0.12); }
+  .path-card h3 {
+    font-size: 1.45rem;
+    color: var(--leaf-dark);
+    margin: 0;
+  }
+  .path-card p {
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    margin: 0;
+  }
+  .path-topics {
+    list-style: none;
+    margin: 8px 0 16px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .path-topics li {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    padding-left: 22px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .path-topics li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--leaf);
+    font-weight: 600;
+  }
+  .path-strategy .path-topics li::before { color: var(--sun); }
+  .path-cta {
+    margin-top: auto;
+    padding-top: 8px;
+    color: var(--leaf);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .path-strategy .path-cta { color: #B8860B; }
+
+  @media (max-width: 900px) {
+    .paths-grid { grid-template-columns: 1fr; gap: 16px; }
+  }
 
   /* HERO */
   .hero { padding-top: 160px; padding-bottom: 80px; position: relative; overflow: hidden; }
